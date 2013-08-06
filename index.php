@@ -13,4 +13,3 @@ require_once($yii);
 
 require_once('protected/components/WebApplication.php');
 Yii::createApplication('WebApplication', $config)->run();
-//test new222

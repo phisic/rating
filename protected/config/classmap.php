@@ -1,4 +1,4 @@
 <?php
 return array(
-    'Statistics' => Yii::app()->basePath . '/components/Statistics.php',
+    'StringParser' => Yii::app()->basePath . '/components/StringParser.php',
 );
