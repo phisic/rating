@@ -23,7 +23,7 @@ class RatingCommand extends CConsoleCommand {
                 $c2->addColumnCondition(array('Id' => $row['Id']));
                 $date = date('Y-m-d H:i:s');
                 $r = Yii::app()->db->getCommandBuilder()->createInsertCommand('item_history', array('ItemId' => $row['Id'], 'Rank' => (int) $rank, 'DateCreated' => $date))->execute();
-                $r = Yii::app()->db->getCommandBuilder()->createUpdateCommand('item', array('Rank' => (int) $rank, 'DateRank'=>$date), $c2)->execute();
+                $r = Yii::app()->db->getCommandBuilder()->createUpdateCommand('item', array('Rank' => (int) $rank, 'RankDate'=>$date), $c2)->execute();
             }
         } while ($r);
     }
