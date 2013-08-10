@@ -13,8 +13,8 @@ class StringParser {
         return $this->buf;
     }
 
-    public function next() {
-        
+    public function reset() {
+        $this->offset = 0;
     }
 
     public function between($a, $c) {
@@ -29,6 +29,14 @@ class StringParser {
 
     public function remove($text) {
         return new StringParser(str_replace($text, '', $this->buf), false);
+    }
+    
+    public function removeTags(array $tags){
+        $pattern = array();
+        foreach ($tags as $tag){
+            $pattern[] = '@<'.$tag.'[^>]*?>.*?</'.$tag.'>@si';                
+        }
+        return new StringParser(preg_replace($pattern, '', $this->buf), false);
     }
 
     public function stripTags($allow = '') {

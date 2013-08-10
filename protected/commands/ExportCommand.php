@@ -51,11 +51,12 @@ class ExportCommand extends CConsoleCommand {
     }
 
     public function actionGoogleTrend() {
-        $r = file_get_contents('../data/category');
+        $r = file_get_contents('http://www.google.com/trends/topcharts/category?ajax=1&cid=&date=201307&geo=US');
         $r = json_decode($r, true);
         $date = date('Y-m-d H:i:s');
+        $newItems = 0;
         foreach ($r['data']['chartList'] as $c) {
-            $name = 'Most Popular '.$c['visibleName'];
+            $name = 'Most Popular ' . $c['visibleName'];
             $c1 = new CDbCriteria(array('select' => 'Id'));
             $c1->addColumnCondition(array('Name' => $name));
 
@@ -75,7 +76,7 @@ class ExportCommand extends CConsoleCommand {
                 $c2 = new CDbCriteria(array('select' => 'Id'));
                 $c2->addColumnCondition(array('Keyword' => $i['title']));
                 $exist = Yii::app()->db->getCommandBuilder()->createFindCommand('item', $c2)->queryRow();
-                echo $i['title']."\n";
+                echo $i['title'] . "\n";
                 if (empty($exist)) {
                     $data = array(
                         'Keyword' => $i['title'],
@@ -85,10 +86,56 @@ class ExportCommand extends CConsoleCommand {
                     );
                     Yii::app()->db->getCommandBuilder()->createInsertCommand('item', $data)->execute();
                     $iId = Yii::app()->db->getCommandBuilder()->getLastInsertID('item');
-                    Yii::app()->db->getCommandBuilder()->createInsertCommand('rating2item', array('ItemId'=>$iId,'RatingId'=>$rId))->execute();
+                    Yii::app()->db->getCommandBuilder()->createInsertCommand('rating2item', array('ItemId' => $iId, 'RatingId' => $rId))->execute();
+                    $newItems++;
                 }
             }
         }
+        echo 'inserts='.$newItems."\n";
+    }
+
+    public function actionWiki() {
+        $c = new CDbCriteria(array('select' => 't.Id,Keyword'));
+        $c->join = 'LEFT JOIN item_text it ON t.Id = it.ItemId';
+        $c->addCondition('it.Id is null');
+        $c->limit = 100;
+        $page = 1;
+        $p = new StringParser();
+        do {
+            $r = Yii::app()->db->getCommandBuilder()->createFindCommand('item', $c)->queryAll();
+            $c->offset = $c->limit * $page;
+            $page++;
+            foreach ($r as $i) {
+                $u = 'http://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=' . urlencode($i['Keyword']) . '&namespace=0&suggest=';
+                $articles = json_decode($p->url($u)->get(), true);
+                if (isset($articles[1])) {
+                    foreach ($articles[1] as $wikiTitle) {
+                        $p->reset();
+                        echo $wikiTitle . "\n";
+                        $data = array();
+                        $wu = 'http://en.wikipedia.org/wiki/' . strtr($wikiTitle, ' ', '_');
+                        echo $wu . "\n";
+                        $content = $p->url($wu)
+                                ->between(
+                                '<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr">', '<div class="visualClear"></div>'
+                        );
+                        if (empty($content))
+                            continue;
+
+                        $data['Content'] = $content->removeTags(array('script', 'table', 'div', 'ul', 'sup'))
+                                ->stripTags('<b>,<i>,<ul>,<li>,<p>,<h2>,<h3>')
+                                ->remove(array('<h2>Notes</h2>', '<h2>External links</h2>', '[edit source | edit]'))
+                                ->get();
+                        $data['Title'] = $wikiTitle;
+                        $data['Source'] = 'wikipedia.org';
+                        $data['SourceUrl'] = $wu;
+                        $data['ItemId'] = $i['Id'];
+                        $data['DateCreated'] = date('Y-m-d H:i:s');
+                        Yii::app()->db->getCommandBuilder()->createInsertCommand('item_text', $data)->execute();
+                    }
+                }
+            }
+        } while ($r);
     }
 
 }
