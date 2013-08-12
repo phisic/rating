@@ -91,21 +91,19 @@ class ExportCommand extends CConsoleCommand {
                 }
             }
         }
-        echo 'inserts='.$newItems."\n";
+        echo 'inserts=' . $newItems . "\n";
     }
 
     public function actionWiki() {
         $c = new CDbCriteria(array('select' => 't.Id,Keyword'));
-        $c->join = 'LEFT JOIN item_text it ON t.Id = it.ItemId';
-        $c->addCondition('it.Id is null');
+        $c->join = 'LEFT JOIN wiki_log it ON t.Id = it.ItemId';
+        $c->addCondition('it.DateCreated < (NOW() - Interval 7 Day) OR it.dateCreated IS NULL');
         $c->limit = 100;
-        $page = 1;
         $p = new StringParser();
         do {
             $r = Yii::app()->db->getCommandBuilder()->createFindCommand('item', $c)->queryAll();
-            $c->offset = $c->limit * $page;
-            $page++;
             foreach ($r as $i) {
+                echo $i['Keyword'] . "\n";
                 $u = 'http://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=' . urlencode($i['Keyword']) . '&namespace=0&suggest=';
                 $articles = json_decode($p->url($u)->get(), true);
                 if (isset($articles[1])) {
@@ -113,7 +111,7 @@ class ExportCommand extends CConsoleCommand {
                         $p->reset();
                         echo $wikiTitle . "\n";
                         $data = array();
-                        $wu = 'http://en.wikipedia.org/wiki/' . strtr($wikiTitle, ' ', '_');
+                        $wu = 'http://en.wikipedia.org/wiki/' . strtr($wikiTitle, array(' ' => '_', '?' => '%3F'));
                         echo $wu . "\n";
                         $content = $p->url($wu)
                                 ->between(
@@ -134,8 +132,56 @@ class ExportCommand extends CConsoleCommand {
                         Yii::app()->db->getCommandBuilder()->createInsertCommand('item_text', $data)->execute();
                     }
                 }
+                Yii::app()->db->getCommandBuilder()->createSQLCommand('REPLACE INTO wiki_log values(' . $i['Id'] . ',"' . date('Y-m-d H:i:s') . '")')->execute();
             }
         } while ($r);
+    }
+
+    public function actionBio() {
+        $p = new StringParser();
+        $pmenu = $p->url('http://www.biography.com/people')->between('<span>Best Known For</span>', '<li class="has-submenu mainItem">');
+        $u = array();
+
+        while ($a = $pmenu->between('<li class="no-submenu"><a href="">', '</a></li>')) {
+            $h = $a->between('"', '"')->get();
+            $t = $a->between('>', '<')->get();
+            $u[$h] = $t;
+        }
+
+        $pmenu->reset();
+
+        while ($a = $pmenu->between('<li class="no-submenu"><span>', '</span>')) {
+            $h = $a->between('"', '"')->get();
+            $t = $a->between('>', '<')->get();
+            $u[$h] = $t;
+        }
+        foreach ($u as $url => $name) {
+            $page = 1;
+            $url = 'http://www.biography.com' . $url . '/all?view=gallery&sort=last-name&page=';
+            echo $name . "\n";
+            $fetch = true;
+            while (true) {
+                $pc = $p->url($url . $page)->between('<ul class = "gallery-list">', '<!-- Center: End -->');
+                $pager = $p->between('<li class="current">', '</li>');
+                
+                $items = array();
+                
+                while ($p2 = $pc->between('<h3 class="dot">', '</h3>')) {
+                    $items[] = $p2->between('"', '"')->get();
+                }
+
+                if (empty($pager) || $pager->get() != $page)
+                    break;
+                
+                foreach ($items as $iUrl) {
+                    $name = $p->url($iUrl)->between('<span class="dot"  id="name-of-profile-title" >', '</span>')->get();
+                    $img = $p->between('<div id="profile-photo-container">', '</div>')->between('"', '"')->get();
+                    echo $name.'-'.$img."\n";
+                }
+                
+                $page++;
+            }
+        }
     }
 
 }

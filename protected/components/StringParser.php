@@ -45,6 +45,7 @@ class StringParser {
 
     public function url($url) {
         $this->buf = file_get_contents($url);
+        $this->reset();
         return $this;
     }
 
