@@ -174,7 +174,8 @@ class ExportCommand extends CConsoleCommand {
                     $iUrl = 'http://www.biography.com'.$iUrl;
                     $name = $p->url($iUrl)->between('<span class="dot"  id="name-of-profile-title" >', '</span>')->get();
                     $img = $p->between('<div id="profile-photo-container">', '</div>')->between('"', '"')->get();
-                    echo $name.'-'.$img."\n";
+                    $cont = $p->cut('<div id="profile-biography">')->removeTags(array('div','h3'))->between('<p>','</p>')->get();
+                    Yii::app()->db->getCommandBuilder()->createInsertCommand();
                 }
                 
                 if (empty($pager) || $pager->get() != $page)

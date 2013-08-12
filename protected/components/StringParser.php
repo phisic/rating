@@ -3,7 +3,7 @@
 class StringParser {
 
     protected $buf = '';
-    protected $offset = 0;
+    public $offset = 0;
 
     public function __construct($text = '') {
         $this->buf = $text;
@@ -16,7 +16,7 @@ class StringParser {
     public function reset() {
         $this->offset = 0;
     }
-
+    
     public function between($a, $c) {
         $t1 = strpos($this->buf, $a, $this->offset);
         if ($t1 === false)
@@ -24,11 +24,17 @@ class StringParser {
         $start = $t1 + strlen($a);
         $t2 = strpos($this->buf, $c, $start);
         $this->offset = $t2 + strlen($c);
-        return new StringParser(substr($this->buf, $start, $t2 - $start), false);
+        return new StringParser(substr($this->buf, $start, $t2 - $start));
     }
-
+    
+    public function cut($a){
+        $t1 = strpos($this->buf, $a, $this->offset);
+        if ($t1 === false)
+            return null;
+        return new StringParser(substr($this->buf, $t1));
+    }
     public function remove($text) {
-        return new StringParser(str_replace($text, '', $this->buf), false);
+        return new StringParser(str_replace($text, '', $this->buf));
     }
     
     public function removeTags(array $tags){
