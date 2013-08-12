@@ -170,15 +170,15 @@ class ExportCommand extends CConsoleCommand {
                     $items[] = $p2->between('"', '"')->get();
                 }
 
-                if (empty($pager) || $pager->get() != $page)
-                    break;
-                
                 foreach ($items as $iUrl) {
+                    $iUrl = 'http://www.biography.com'.$iUrl;
                     $name = $p->url($iUrl)->between('<span class="dot"  id="name-of-profile-title" >', '</span>')->get();
                     $img = $p->between('<div id="profile-photo-container">', '</div>')->between('"', '"')->get();
                     echo $name.'-'.$img."\n";
                 }
                 
+                if (empty($pager) || $pager->get() != $page)
+                    break;
                 $page++;
             }
         }
