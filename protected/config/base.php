@@ -5,7 +5,7 @@ return array(
 	'preload'=>array('log'),
 
 	'modules'=>array(
-        'user'=>array(
+            'user'=>array(
                 # encrypting method (php hash function)
                 'hash' => 'md5',
 
@@ -35,6 +35,8 @@ return array(
 
                 # page after logout
                 'returnLogoutUrl' => array('/user/login'),
+            
+                'class'=>'WebUser',
             ),
 	),
 
@@ -81,6 +83,12 @@ return array(
 				),
 			),
 		),
+            'authManager'=>array(
+                //'class'=>'CDbAuthManager',
+		//'connectionID'=>'db',
+		'class'=>'PhpAuthManager',
+		'defaultRoles'=>array('guest'),
+            ),
 	),
 
 	// application-level parameters that can be accessed
