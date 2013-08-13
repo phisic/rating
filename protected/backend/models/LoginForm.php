@@ -25,7 +25,7 @@ class LoginForm extends CFormModel
 			array('username, password', 'required'),
 			// rememberMe needs to be a boolean
 			array('rememberMe', 'boolean'),
-                        // password needs to be authenticated
+			// password needs to be authenticated
 			array('password', 'authenticate'),
 		);
 	}
@@ -39,8 +39,8 @@ class LoginForm extends CFormModel
 			'rememberMe'=>'Remember me next time',
 		);
 	}
-        
-        /**
+
+	/**
 	 * Authenticates the password.
 	 * This is the 'authenticate' validator as declared in rules().
 	 */
