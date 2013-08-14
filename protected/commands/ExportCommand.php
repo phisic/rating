@@ -47,8 +47,7 @@ class ExportCommand extends CConsoleCommand {
             $rId = $this->createRating($name);
 
             foreach ($c['entityList'] as $i) {
-                $iId = $this->createItem($i['title'], isset($i['imageInfo']['url']) ? $i['imageInfo']['url'] : null);
-                Yii::app()->db->getCommandBuilder()->createInsertCommand('rating2item', array('ItemId' => $iId, 'RatingId' => $rId))->execute();
+                $this->createItem($i['title'], isset($i['imageInfo']['url']) ? $i['imageInfo']['url'] : null, $rId);
                 $newItems++;
             }
         }
@@ -118,7 +117,7 @@ class ExportCommand extends CConsoleCommand {
             $u[$h] = $t;
         }
         foreach ($u as $url => $categoryName) {
-            $rId = $this->createRating('Most Famous ' . $categoryName);
+            $ratingId = $this->createRating('Most Famous ' . $categoryName);
             $page = 1;
             $url = 'http://www.biography.com' . $url . '/all?view=gallery&sort=last-name&page=';
             echo $categoryName . "\n";
@@ -136,10 +135,20 @@ class ExportCommand extends CConsoleCommand {
                 foreach ($items as $iUrl) {
                     $iUrl = 'http://www.biography.com' . $iUrl;
                     $name = $p->url($iUrl)->between('<span class="dot"  id="name-of-profile-title" >', '</span>')->get();
-                    $img = $p->between('<div id="profile-photo-container">', '</div>')->between('"', '"')->get();
-                    $cont = $p->cut('<div id="profile-biography">')->removeTags(array('div', 'h3'))->between('<p>', '</p>')->get();
-
-                    Yii::app()->db->getCommandBuilder()->createInsertCommand();
+                    $image = $p->between('<div id="profile-photo-container">', '</div>')->between('"', '"')->get();
+                    
+                    $iId = $this->createItem($name, $image, $ratingId);
+                    
+                    $data['Content'] = $p->cut('<div id="profile-biography">')->removeTags(array('div', 'h3'))->between('<p>', '</p>')->get(); 
+                    if($data['Content'] == '&copy; 2013 A+E Networks. All rights reserved.'){
+                        
+                    }
+                    $data['Title'] = $name;
+                    $data['Source'] = 'biography.com';
+                    $data['SourceUrl'] = $iUrl;
+                    $data['ItemId'] = $iId;
+                    $data['DateCreated'] = $date;
+                    Yii::app()->db->getCommandBuilder()->createInsertCommand('item_text', $data)->execute();
                 }
 
                 if (empty($pager) || $pager->get() != $page)
@@ -167,7 +176,7 @@ class ExportCommand extends CConsoleCommand {
             return $rexist['Id'];
     }
 
-    protected function createItem($keyword, $image) {
+    protected function createItem($keyword, $image, $ratingId = false) {
         $date = date('Y-m-d H:i:s');
         $c2 = new CDbCriteria(array('select' => 'Id'));
         $c2->addColumnCondition(array('Keyword' => $keyword));
@@ -180,10 +189,14 @@ class ExportCommand extends CConsoleCommand {
                 'DateCreated' => $date,
             );
             Yii::app()->db->getCommandBuilder()->createInsertCommand('item', $data)->execute();
-            return Yii::app()->db->getCommandBuilder()->getLastInsertID('item');
+
+            $iId = Yii::app()->db->getCommandBuilder()->getLastInsertID('item');
         }
         else
-            return $exist['Id'];
+            $iId = $exist['Id'];
+
+        Yii::app()->db->getCommandBuilder()->createSQLCommand('replace into rating2item values (' . $iId . ',' . $ratingId . ')')->execute();
+        return $iId;
     }
 
 }
