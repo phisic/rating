@@ -141,8 +141,9 @@ class ExportCommand extends CConsoleCommand {
                     
                     $data['Content'] = $p->cut('<div id="profile-biography">')->removeTags(array('div', 'h3'))->between('<p>', '</p>')->get(); 
                     if($data['Content'] == '&copy; 2013 A+E Networks. All rights reserved.'){
-                        
+                        $data['Content'] = $p->between('<h3><a name="profile">Profile</a></h3>', '<p>&copy; 2013')->get();
                     }
+                    
                     $data['Title'] = $name;
                     $data['Source'] = 'biography.com';
                     $data['SourceUrl'] = $iUrl;
