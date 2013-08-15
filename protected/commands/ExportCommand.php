@@ -133,23 +133,30 @@ class ExportCommand extends CConsoleCommand {
                 }
 
                 foreach ($items as $iUrl) {
-                    $iUrl = 'http://www.biography.com' . $iUrl;
-                    $name = $p->url($iUrl)->between('<span class="dot"  id="name-of-profile-title" >', '</span>')->get();
-                    $image = $p->between('<div id="profile-photo-container">', '</div>')->between('"', '"')->get();
-                    
+                    $iUrl = 'http://www.biography.com' . str_replace('/people', '/print/profile', $iUrl);
+                    echo $iUrl."\n";
+                    $name = $p->url($iUrl)->between('<span class="dot">', '</span>')->get();
+                    $image = $p->reset()->between('<img src="', '"/>')->get();
+                    echo "\t" . $name . "\n";
                     $iId = $this->createItem($name, $image, $ratingId);
-                    
-                    $data['Content'] = $p->cut('<div id="profile-biography">')->removeTags(array('div', 'h3'))->between('<p>', '</p>')->get(); 
-                    if($data['Content'] == '&copy; 2013 A+E Networks. All rights reserved.'){
-                        $data['Content'] = $p->between('<h3><a name="profile">Profile</a></h3>', '<p>&copy; 2013')->get();
+                    $source = 'biography.com';
+                    if (!$this->contentExist($source, $iId)) {
+                        $p = $p->reset()->cut('<div class="main-content clearfix">');
+                        $cont = $p->between('<p>', '</p>');
+                        if (empty($cont))
+                            $cont = $p->between('</h3>', '<h3>');
+                        if ($cont) {
+                            $data['Content'] = $cont->trim()->get();
+                            $data['Title'] = $name;
+                            $data['Source'] = $source;
+                            $data['SourceUrl'] = $iUrl;
+                            $data['ItemId'] = $iId;
+                            $data['DateCreated'] = $date;
+                            Yii::app()->db->getCommandBuilder()->createInsertCommand('item_text', $data)->execute();
+                        } else {
+                            echo 'NO CONTENT' . "\n";
+                        }
                     }
-                    
-                    $data['Title'] = $name;
-                    $data['Source'] = 'biography.com';
-                    $data['SourceUrl'] = $iUrl;
-                    $data['ItemId'] = $iId;
-                    $data['DateCreated'] = $date;
-                    Yii::app()->db->getCommandBuilder()->createInsertCommand('item_text', $data)->execute();
                 }
 
                 if (empty($pager) || $pager->get() != $page)
@@ -198,6 +205,13 @@ class ExportCommand extends CConsoleCommand {
 
         Yii::app()->db->getCommandBuilder()->createSQLCommand('replace into rating2item values (' . $iId . ',' . $ratingId . ')')->execute();
         return $iId;
+    }
+
+    protected function contentExist($source, $itemId) {
+        $c2 = new CDbCriteria(array('select' => 'Id'));
+        $c2->addColumnCondition(array('Source' => $source, 'ItemId' => $itemId));
+        $exist = Yii::app()->db->getCommandBuilder()->createFindCommand('item_text', $c2)->queryRow();
+        return !empty($exist);
     }
 
 }

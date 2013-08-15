@@ -15,8 +15,14 @@ class StringParser {
 
     public function reset() {
         $this->offset = 0;
+        return $this;
     }
     
+    public function trim(){
+        $this->buf = trim($this->buf, " \t\n");
+        return $this;
+    }
+
     public function between($a, $c) {
         $t1 = strpos($this->buf, $a, $this->offset);
         if ($t1 === false)
