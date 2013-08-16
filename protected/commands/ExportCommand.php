@@ -38,20 +38,25 @@ class ExportCommand extends CConsoleCommand {
     }
 
     public function actionGoogleTrend() {
-        $r = file_get_contents('http://www.google.com/trends/topcharts/category?ajax=1&cid=&date=201307&geo=US');
-        $r = json_decode($r, true);
-        $date = date('Y-m-d H:i:s');
-        $newItems = 0;
-        foreach ($r['data']['chartList'] as $c) {
-            $name = 'Most Popular ' . $c['visibleName'];
-            $rId = $this->createRating($name);
+        $date = new DateTime('2004-01-01');
+        $today = date('Ym');
+        while (($start = $date->format('Ym')) != $today) {
+            echo 'Date=' . $start . "\n";
+            $r = file_get_contents('http://www.google.com/trends/topcharts/category?ajax=1&cid=&date=' . $start . '&geo=US');
+            $r = json_decode($r, true);
+            $newItems = 0;
+            foreach ($r['data']['chartList'] as $c) {
+                $name = 'Most Popular ' . $c['visibleName'];
+                $rId = $this->createRating($name);
 
-            foreach ($c['entityList'] as $i) {
-                $this->createItem($i['title'], isset($i['imageInfo']['url']) ? $i['imageInfo']['url'] : null, $rId);
-                $newItems++;
+                foreach ($c['entityList'] as $i) {
+                    $this->createItem($i['title'], isset($i['imageInfo']['url']) ? $i['imageInfo']['url'] : null, $rId);
+                    $newItems++;
+                }
             }
+            $date->add(new DateInterval('P1M'));
+            echo 'inserts=' . $newItems . "\n";
         }
-        echo 'inserts=' . $newItems . "\n";
     }
 
     public function actionWiki() {
@@ -116,25 +121,41 @@ class ExportCommand extends CConsoleCommand {
             $t = $a->between('>', '<')->get();
             $u[$h] = $t;
         }
+        $skip = true;
         foreach ($u as $url => $categoryName) {
             $ratingId = $this->createRating('Most Famous ' . $categoryName);
             $page = 1;
             $url = 'http://www.biography.com' . $url . '/all?view=gallery&sort=last-name&page=';
             echo $categoryName . "\n";
+            if ($categoryName == 'TV Moms')
+                $skip = false;
+            if ($skip)
+                continue;
             $fetch = true;
             while (true) {
                 $pc = $p->url($url . $page)->between('<ul class = "gallery-list">', '<!-- Center: End -->');
                 $pager = $p->between('<li class="current">', '</li>');
-
                 $items = array();
 
-                while ($p2 = $pc->between('<h3 class="dot">', '</h3>')) {
-                    $items[] = $p2->between('"', '"')->get();
+                if (empty($pc)) {
+                    while ($pInner = $p->reset()->between('<div class="center-second-column-content directory-name-listing clearfix">', '<div class="pagination">')) {
+                        $pInner = $pInner->removeTags(array('div'))->between('<a href="', '" class="dot">');
+                        if (empty($pInner))
+                            continue;
+                        $pc = $p->url('http://www.biography.com' . $pInner->get() . '/all')->between('<ul class = "gallery-list">', '<!-- Center: End -->');
+                        while ($p2 = $pc->between('<h3 class="dot">', '</h3>')) {
+                            $items[] = $p2->between('"', '"')->get();
+                        }
+                    }
+                } else {
+                    while ($p2 = $pc->between('<h3 class="dot">', '</h3>')) {
+                        $items[] = $p2->between('"', '"')->get();
+                    }
                 }
 
                 foreach ($items as $iUrl) {
                     $iUrl = 'http://www.biography.com' . str_replace('/people', '/print/profile', $iUrl);
-                    echo $iUrl."\n";
+                    echo $iUrl . "\n";
                     $name = $p->url($iUrl)->between('<span class="dot">', '</span>')->get();
                     $image = $p->reset()->between('<img src="', '"/>')->get();
                     echo "\t" . $name . "\n";
