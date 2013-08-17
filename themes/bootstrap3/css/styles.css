@@ -64,6 +64,10 @@ body{
 .fixcontainer .dropdown-menu a:hover, .fixcontainer .dropdown-menu a:focus{
 	background-image: none;
 }
+
+.vlist{
+    margin-bottom: 10px;
+}
 @media (max-width: 980px) {
 	/* Enable use of floated navbar text */
 	.navbar-text.pull-right {

@@ -34,7 +34,7 @@
             </form>
           </div><!--.topsearchform-->
           <div id="brand_name_container">
-            <a href="/" rel="popover" id="brand_name" class="brand">PopularOnWeb <span class="caret hidden-phone hidden-tablet"></span></a>
+            <a href="/" rel="popover" id="brand_name" class="brand"><span class="text-info">Open</span><span class="text-success">Web</span><span class="text-important">Rating</span> <span class="caret hidden-phone hidden-tablet"></span></a>
             <div id="brand_name_content" style="display: none;">
               <div class="span3 category_list">
                 <ul>
@@ -91,42 +91,7 @@
       </div><!--navbar-inner-->
     </div><!--.navbar-->
     <div class="container-fluid fixcontainer">
-      <h1>Testinggg</h1>
-      <ul class="thumbnails">
-        <li class="span3">
-          <div class="thumbnail">
-            <img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/noimage.jpeg" />
-            <h4>Test</h4>
-            <p>Testing...</p>
-          </div>
-        </li>
-        <li class="span3">
-          <div class="thumbnail">
-            <a href="#"></a><img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/noimage.jpeg" /></a>
-            <h4>Test <span class="label label-info">123</span></h4>
-            <p>Testing...</p>
-          </div>
-        </li>
-        <li class="span3">
-          <div class="thumbnail">
-            <img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/noimage.jpeg" />
-            <h4>Test</h4>
-            <p>Testing...</p>
-          </div>
-        </li>
-      </ul><!--.thumbnails-->
-      <div class="pagination pagination-centered">
-        <ul>
-          <li class="disabled"><a href="#">&laquo;</a></li>
-          <li class="active"><a href="#">1</a></li>
-          <li><a href="#">2</a></li>
-          <li><a href="#">3</a></li>
-          <li><a href="#">4</a></li>
-          <li><span>...</span></li>
-          <li><a href="#">20</a></li>
-          <li><a href="#">&raquo;</a></li>
-        </ul>
-      </div>
+        <?php echo $content; ?>
       <div class="clear-fix"></div>
     </div>
     <div class="navbar navbar-inverse navbar-fixed-bottom">
@@ -136,38 +101,6 @@
         </div>
       </div>
     </div>
-
-    <div id="loginform" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="loginFormLabel" aria-hidden="true">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-        <div id="loginFormLabel"><h4>Authorization</h4></div>
-      </div>
-      <div class="modal-body">
-        <form class="form-horizontal" id="authorizationform">
-          <div class="control-group">
-            <label class="control-label" for="inputLogin">Login</label>
-            <div class="controls">
-              <input type="text" id="inputLogin" placeholder="Login" />
-            </div>
-          </div>
-          <div class="control-group">
-            <label class="control-label" for="inputPassword">Password</label>
-            <div class="controls">
-              <input type="password" id="inputPassword" placeholder="Password" />
-            </div>
-          </div>
-          <input type="hidden" name="authorizationButton">
-        </form>
-      </div><!--.modal-body-->
-      <div class="modal-footer">
-        <div class="pull-left">
-          <a href="#">Forgot your password?</a>
-        </div>
-        <button class="btn btn-primary" onclick="$('#authorizationform').submit(); return false;">Login</button>
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-      </div><!--.modal-footer-->
-    </div><!--#loginform-->
-
     <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery-1.10.2.min.js"></script>
     <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/bootstrap.min.js"></script>
     <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/scripts.js"></script>
