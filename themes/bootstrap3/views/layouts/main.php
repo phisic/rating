@@ -14,7 +14,7 @@
     <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/styles.css" rel="stylesheet" media="screen">
   </head>
   <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container-fluid topcontainer fixcontainer">
           <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -34,27 +34,7 @@
             </form>
           </div><!--.topsearchform-->
           <div id="brand_name_container">
-            <a href="/" rel="popover" id="brand_name" class="brand"><span class="text-info">Open</span><span class="text-success">Web</span><span class="text-important">Rating</span> <span class="caret hidden-phone hidden-tablet"></span></a>
-            <div id="brand_name_content" style="display: none;">
-              <div class="span3 category_list">
-                <ul>
-                  <li><a href="#" data-target="#category_item1">Cat1</a></li>
-                  <li><a href="#" data-target="#category_item2">Cat2</a></li>
-                  <li><a href="#" data-target="#category_item3">Cat3</a></li>
-                  <li><a href="#" data-target="#category_item4">Cat4</a></li>
-                  <li><a href="#" data-target="#category_item5">Cat5</a></li>
-                </ul>
-              </div><!--.category_list-->
-              <div class="span5 category_items">
-                <div id="category_item1" class="hide">test111</div>
-                <div id="category_item2" class="hide">test222</div>
-                <div id="category_item3" class="hide">test333</div>
-                <div id="category_item4" class="hide">test444</div>
-                <div id="category_item5" class="hide">test555</div>
-                <div>Choose category</div>
-              </div><!--.category_items-->
-              <div class="clearfix"></div>
-            </div><!--#brand_name_content-->
+            <a href="/" id="brand_name" class="brand"><span class="text-info">Open</span><span class="text-success">Web</span><span class="text-error">Rating</span></a>
           </div><!--#brand_name_container-->
           <div class="collapse nav-collapse">
             <p class="navbar-text pull-right">

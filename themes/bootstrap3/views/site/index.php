@@ -3,7 +3,7 @@
     Everything published here is open and it means you can create your own popularity ratings, add missing items into existing ratings and share them with others.
     We build ratings for most popular on the web and we happy if you join to us.
 </div>
-<h1>Top Rating</h1>
+<h1>Most popular on the web</h1>
 <div class="row-fluid vlist">
     <div class="span4">
         <div class="row-fluid"><div class="span4"><span class="label label-info">Most popular</span></div></div> 
@@ -16,8 +16,8 @@
                     <span class="label label-info">#1</span>
                     <strong>Jared Remy</strong>
                 </div>
-                <div>Web Score: 27000</div>
-                Jared W. Remy was arraigned in Waltham District
+                <div>Web Score: <strong>27K</strong> <span class="label label-success">+1.5K</span></div>
+                Jared W. Remy was arraigned in Waltham District <a href="">read more</a>
             </div>
         </div>    
         <div class="row-fluid">
@@ -29,7 +29,7 @@
                     <span class="label label-info">#1</span>
                     <strong>Jared Remy</strong>
                 </div>
-                <div>Web Score: 27000</div>
+                <div>Web Score: 27000 <span class="label label-important">-200</span></div>
                 Jared W. Remy was arraigned in Waltham District
             </div>
         </div> 
@@ -192,17 +192,3 @@
     </div>
 </div>
 <div class="row-fluid"><div class="span5"><a>View Full Rating</a> (1678 items)</div></div>
-
-<!--.thumbnails-->
-<div class="pagination pagination-centered">
-    <ul>
-        <li class="disabled"><a href="#">&laquo;</a></li>
-        <li class="active"><a href="#">1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><span>...</span></li>
-        <li><a href="#">20</a></li>
-        <li><a href="#">&raquo;</a></li>
-    </ul>
-</div>
