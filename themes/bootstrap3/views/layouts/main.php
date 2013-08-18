@@ -51,21 +51,8 @@
                 </div>
               </form>
             </div><!--.topsearchform-->
-            <ul class="nav">
-              <li><a href="#">Home</a></li>
-              <li><a href="#">Link1</a></li>
-              <li><a href="#">Link2</a></li>
-              <li><a href="#">Link3</a></li>
-              <li class="hidden-desktop"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Category List</a>
-                <ul class="dropdown-menu">
-                  <li><a tabindex="-1" href="#">Cat1</a></li>
-                  <li><a tabindex="-1" href="#">Another action</a></li>
-                  <li><a tabindex="-1" href="#">Something else here</a></li>
-                  <li class="divider"></li>
-                  <li><a tabindex="-1" href="#">Separated link</a></li>
-                </ul>
-              </li>
-            </ul><!--.nav-->
+                <?=Yii::app()->helper->mainMenu();?>
+              <!--.nav-->
           </div>
         </div>
       </div><!--navbar-inner-->

@@ -11,29 +11,23 @@ class ExportCommand extends CConsoleCommand {
 
         foreach ($list as $i) {
             $url = $this->forbesUrl . $i[2];
-
             $c = new CDbCriteria(array('select' => 'Id'));
             $c->addColumnCondition(array('Keyword' => $i[3]));
             $exist = Yii::app()->db->getCommandBuilder()->createFindCommand('item', $c)->queryRow();
-            if ($exist)
-                continue;
-
-            $parser = new StringParser('');
-            $description = $parser->url($url)->between('<p id="bio">', '</p>')->stripTags()->remove(' [...] more')->get();
-            $img = $parser->between('<div class="logoImg">', '</div>')->between('src="', '"')->get();
-
-            Yii::app()->db->getCommandBuilder()->createInsertCommand('item', array(
-                'Keyword' => $i[3],
-                'Description' => $description,
-                'Image' => $img,
-                'Attributes' => serialize(array('Worth' => $i[7], 'Age' => $i[6], 'Source' => $i[10], 'Country' => $i[9])),
-                'DateCreated' => $date,
-            ))->execute();
-            $itemId = Yii::app()->db->getCommandBuilder()->getLastInsertID('item');
-            Yii::app()->db->getCommandBuilder()->createInsertCommand('rating2item', array(
-                'RatingId' => $ratingId,
-                'ItemId' => $itemId,
-            ))->execute();
+            if (!$exist) {
+                $parser = new StringParser('');
+                $description = $parser->url($url)->between('<p id="bio">', '</p>')->stripTags()->remove(' [...] more')->get();
+                $img = $parser->between('<div class="logoImg">', '</div>')->between('src="', '"')->get();
+                Yii::app()->db->getCommandBuilder()->createInsertCommand('item', array(
+                    'Keyword' => $i[3],
+                    'Image' => $img,
+                    'Attributes' => serialize(array('Worth' => $i[7], 'Age' => $i[6], 'Source' => $i[10], 'Country' => $i[9])),
+                    'DateCreated' => $date,
+                ))->execute();
+                $itemId = Yii::app()->db->getCommandBuilder()->getLastInsertID('item');
+            }else
+                $itemId = $exist['Id'];
+            Yii::app()->db->getCommandBuilder()->createSQLCommand('REPLACE INTO rating2item (ItemId,RatingId) values (' . $itemId . ',' . $ratingId . ')')->execute();
         }
     }
 
@@ -89,7 +83,6 @@ class ExportCommand extends CConsoleCommand {
                                 ->stripTags('<b>,<i>,<ul>,<li>,<p>,<h2>,<h3>')
                                 ->remove(array('<h2>Notes</h2>', '<h2>External links</h2>', '[edit source | edit]'))
                                 ->get();
-                        $data['Title'] = $wikiTitle;
                         $data['Source'] = 'wikipedia.org';
                         $data['SourceUrl'] = $wu;
                         $data['ItemId'] = $i['Id'];
@@ -107,7 +100,6 @@ class ExportCommand extends CConsoleCommand {
         $p = new StringParser();
         $pmenu = $p->url('http://www.biography.com/people')->between('<span>Best Known For</span>', '<li class="has-submenu mainItem">');
         $u = array();
-
         while ($a = $pmenu->between('<li class="no-submenu"><a href="">', '</a></li>')) {
             $h = $a->between('"', '"')->get();
             $t = $a->between('>', '<')->get();
@@ -120,17 +112,13 @@ class ExportCommand extends CConsoleCommand {
             $h = $a->between('"', '"')->get();
             $t = $a->between('>', '<')->get();
             $u[$h] = $t;
-        }
-        $skip = true;
+        }print_r($u);
         foreach ($u as $url => $categoryName) {
             $ratingId = $this->createRating('Most Famous ' . $categoryName);
             $page = 1;
             $url = 'http://www.biography.com' . $url . '/all?view=gallery&sort=last-name&page=';
             echo $categoryName . "\n";
-            if ($categoryName == 'TV Moms')
-                $skip = false;
-            if ($skip)
-                continue;
+            
             $fetch = true;
             while (true) {
                 $pc = $p->url($url . $page)->between('<ul class = "gallery-list">', '<!-- Center: End -->');
@@ -168,7 +156,6 @@ class ExportCommand extends CConsoleCommand {
                             $cont = $p->between('</h3>', '<h3>');
                         if ($cont) {
                             $data['Content'] = $cont->trim()->get();
-                            $data['Title'] = $name;
                             $data['Source'] = $source;
                             $data['SourceUrl'] = $iUrl;
                             $data['ItemId'] = $iId;
@@ -205,7 +192,7 @@ class ExportCommand extends CConsoleCommand {
             return $rexist['Id'];
     }
 
-    protected function createItem($keyword, $image, $ratingId = false) {
+    protected function createItem($keyword, $image, $ratingId = false, $attributes = null) {
         $date = date('Y-m-d H:i:s');
         $c2 = new CDbCriteria(array('select' => 'Id'));
         $c2->addColumnCondition(array('Keyword' => $keyword));
@@ -216,6 +203,7 @@ class ExportCommand extends CConsoleCommand {
                 'Description' => '',
                 'Image' => $image,
                 'DateCreated' => $date,
+                'Attributes' => $attributes,
             );
             Yii::app()->db->getCommandBuilder()->createInsertCommand('item', $data)->execute();
 
@@ -224,7 +212,7 @@ class ExportCommand extends CConsoleCommand {
         else
             $iId = $exist['Id'];
 
-        Yii::app()->db->getCommandBuilder()->createSQLCommand('replace into rating2item values (' . $iId . ',' . $ratingId . ')')->execute();
+        Yii::app()->db->getCommandBuilder()->createSQLCommand('replace into rating2item (ItemId,RatingId) values (' . $iId . ',' . $ratingId . ')')->execute();
         return $iId;
     }
 

@@ -42,6 +42,9 @@ return array(
 
 	// application components
 	'components'=>array(
+        'helper'=>array(
+            'class'=>'Helper',
+        ),
         'urlManager' => array(
                     'urlFormat' => 'path',
                     'showScriptName' => 0,

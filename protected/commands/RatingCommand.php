@@ -7,7 +7,7 @@ class RatingCommand extends CConsoleCommand {
         $c->addCondition('RankDate < (now()-INTERVAL 3 DAY)');
         $c->order = 'RankDate';
         $c->limit = 100;
-        do {
+        do {echo 'Here!';
             $r = Yii::app()->db->getCommandBuilder()->createFindCommand('item', $c)->queryAll();
             foreach ($r as $row) {
                 $out = '';
@@ -16,6 +16,7 @@ class RatingCommand extends CConsoleCommand {
                 
                 $cmd = 'lynx -source google.com/search?q=\"' . urlencode($row['Keyword']) . '\"';
                 exec($cmd, $out);
+                usleep(200000);
                 echo $row['Keyword'] . "\n";
                 $p = new StringParser(join(' ', $out));
                 $rank = $p->between('About', 'results')->remove(',')->get();

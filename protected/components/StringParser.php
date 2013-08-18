@@ -56,9 +56,21 @@ class StringParser {
     }
 
     public function url($url) {
-        $this->buf = file_get_contents($url);
+        $this->buf = $this->getContent($url);
         $this->reset();
         return $this;
+    }
+    
+    protected function getContent($url){
+        $h = md5($url);
+        $c = new CDbCriteria(array('select'=>'Content'));
+        $c->addColumnCondition(array('Hash'=>$h));
+        $c->addCondition('DateCreated > (NOW() - INTERVAL 3 MONTH)');
+        if(!($cont = Yii::app()->db->getCommandBuilder()->createFindCommand('text_cache', $c)->queryScalar())){
+            $cont = file_get_contents($url);
+            Yii::app()->db->getCommandBuilder()->createInsertCommand('text_cache', array('Hash'=>md5($url), 'Url'=>$url,'Content'=>$cont, 'DateCreated'=>date('Y-m-d H:i:s')))->execute();
+        }
+        return $cont;
     }
 
 }
