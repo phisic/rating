@@ -39,6 +39,7 @@ class StringParser {
             return null;
         return new StringParser(substr($this->buf, $t1));
     }
+    
     public function remove($text) {
         return new StringParser(str_replace($text, '', $this->buf));
     }

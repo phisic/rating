@@ -112,7 +112,7 @@ class ExportCommand extends CConsoleCommand {
             $h = $a->between('"', '"')->get();
             $t = $a->between('>', '<')->get();
             $u[$h] = $t;
-        }print_r($u);
+        }
         foreach ($u as $url => $categoryName) {
             $ratingId = $this->createRating('Most Famous ' . $categoryName);
             $page = 1;
