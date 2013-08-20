@@ -16,25 +16,27 @@ class Helper extends CApplicationComponent {
         $rating = Yii::app()->db->getCommandBuilder()->createFindCommand('rating', $c)->queryAll();
         $list = array();
         foreach ($rating as $r){
-            $r['Items'] = $this->getItems($r['Id']);
-            $list[$r['Id']] = $r;
+            $list['Rating'][$r['Id']] = $r;
         }
+        $list['Items'] = $this->getItems(array_keys($list['Rating']));
+        
         return $list;
     }
     
-    public function getItems($ratingId, $limit=15){
-        $c = new CDbCriteria(array('select'=>'Id,Keyword,Rank,RankDelta,Image','order' => 'Rank Desc', 'limit'=>$limit));
-        $c->join = 'JOIN rating2item ri ON ri.ItemId = t.Id and ri.RatingId='.$ratingId;
-        $items = array();
-        foreach (Yii::app()->db->getCommandBuilder()->createFindCommand('item', $c)->queryAll() as $row){
-            $items[$row['Id']] = $row;
+    public function getItems($ratingIds, $limit=10){
+        $items = $union = array();
+        
+        $s = '(SELECT Id,ri.RatingId,Keyword,Rank,RankDelta,Image, "" as Description FROM item t ';
+        $s .= 'JOIN rating2item ri ON ri.ItemId = t.Id and ri.RatingId=:rid ';
+        $s .= 'ORDER BY t.Rank DESC LIMIT '.$limit .')';
+        foreach($ratingIds as $rId){
+            $union[] = str_replace(':rid', $rId, $s);
         }
-        $ids = array_keys($items);
-        $c = new CDbCriteria(array('select'=>'left(Content, 200) as Description, ItemId'));
-        $c->addInCondition('ItemId', $ids);
-        foreach(Yii::app()->db->getCommandBuilder()->createFindCommand('item_text', $c)->queryAll() as $row){
-            $items[$row['ItemId']]['Description'] = $row['Description'];
+        $sql = join(' UNION ', $union);
+        foreach (Yii::app()->db->getCommandBuilder()->createSqlCommand($sql)->queryAll() as $i){
+            $items[$i['RatingId']][] = $i;
         }
+        
         return $items;
     }
     

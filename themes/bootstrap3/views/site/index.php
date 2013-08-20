@@ -3,12 +3,15 @@
     Everything published here is open and it means you can create your own popularity ratings, add missing items into existing ratings and share them with others.
     We build ratings for most popular on the web and we happy if you join to us.
 </div>
-<?php foreach(Yii::app()->helper->shortRating() as $r){?>
+<?php 
+$rlist = Yii::app()->helper->shortRating();
+foreach($rlist['Rating'] as $r){
+    ?>
 <h1><?=$r['Name']?></h1>
 <div class="row-fluid vlist">
     <div class="span4">
         <div class="row-fluid"><div class="span4"><span class="label label-info">Most popular</span></div></div> 
-        <?php $n=1; foreach ($r['Items'] as $k=>$i){ $n++;?>
+        <?php $n=0; foreach ($rlist['Items'][$r['Id']] as $k=>$i){ $n++;?>
         <div class="row-fluid vlist">
             <div class="span4">
                 <img src="<?=$i['Image']?>">
@@ -18,7 +21,7 @@
                     <span class="label label-info">#<?=$n?></span>
                     <strong><?=$i['Keyword']?></strong>
                 </div>
-                <div>Web Score: <strong>27K</strong> <span class="label label-success">+1.5K</span></div>
+                <div>Web Score: <strong><?=round($i['Rank']/1000)?>K</strong> <span class="label label-success">+1.5K</span></div>
                 <?php if(isset($i['Description'])){ ?> <?=$i['Description']?> <a href="">read more</a> <?php } ?>
             </div>
         </div> 
@@ -32,7 +35,7 @@
             </div>
             <div class="span8">
                 <div>
-                    <span class="label label-info">#1</span>
+                    <span class="label label-success">#1</span>
                     <strong>Jared Remy</strong>
                 </div>
                 <div>Web Score: 27000</div>
@@ -45,7 +48,7 @@
             </div>
             <div class="span8">
                 <div>
-                    <span class="label label-info">#1</span>
+                    <span class="label label-success">#2</span>
                     <strong>Jared Remy</strong>
                 </div>
                 <div>Web Score: 27000</div>
@@ -62,7 +65,7 @@
             </div>
             <div class="span8">
                 <div>
-                    <span class="label label-info">#1</span>
+                    <span class="label label-important">#1</span>
                     <strong>Jared Remy</strong>
                 </div>
                 <div>Web Score: 27000</div>
@@ -75,7 +78,7 @@
             </div>
             <div class="span8">
                 <div>
-                    <span class="label label-info">#1</span>
+                    <span class="label label-important">#2</span>
                     <strong>Jared Remy</strong>
                 </div>
                 <div>Web Score: 27000</div>
