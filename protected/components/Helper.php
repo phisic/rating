@@ -18,8 +18,10 @@ class Helper extends CApplicationComponent {
         foreach ($rating as $r){
             $list['Rating'][$r['Id']] = $r;
         }
-        $list['Items'] = $this->getItems(array_keys($list['Rating']));
-        
+        $ratings = array_keys($list['Rating']);
+        $list['Items'] = $this->getItems($ratings);
+        $list['Growing'] = $this->getItemsGrowing($ratings);
+        $list['Losing'] = $this->getItemsLosing($ratings);
         return $list;
     }
     
@@ -36,10 +38,43 @@ class Helper extends CApplicationComponent {
         foreach (Yii::app()->db->getCommandBuilder()->createSqlCommand($sql)->queryAll() as $i){
             $items[$i['RatingId']][] = $i;
         }
+        return $items;
+    }
+    
+    public function getItemsGrowing($ratingIds, $limit=10){
+        $items = $union = array();
+        
+        $s = '(SELECT Id,ri.RatingId,Keyword,Rank,RankDelta,Image, "" as Description FROM item t ';
+        $s .= 'JOIN rating2item ri ON ri.ItemId = t.Id and ri.RatingId=:rid ';
+        $s .= 'WHERE t.RankDelta > 0 ORDER BY t.RankDelta DESC LIMIT '.$limit .')';
+        foreach($ratingIds as $rId){
+            $union[] = str_replace(':rid', $rId, $s);
+        }
+        $sql = join(' UNION ', $union);
+        foreach (Yii::app()->db->getCommandBuilder()->createSqlCommand($sql)->queryAll() as $i){
+            $items[$i['RatingId']][] = $i;
+        }
         
         return $items;
     }
     
+    
+    public function getItemsLosing($ratingIds, $limit=10){
+        $items = $union = array();
+        
+        $s = '(SELECT Id,ri.RatingId,Keyword,Rank,RankDelta,Image, "" as Description FROM item t ';
+        $s .= 'JOIN rating2item ri ON ri.ItemId = t.Id and ri.RatingId=:rid ';
+        $s .= 'WHERE t.RankDelta < 0 ORDER BY t.RankDelta ASC LIMIT '.$limit .')';
+        foreach($ratingIds as $rId){
+            $union[] = str_replace(':rid', $rId, $s);
+        }
+        $sql = join(' UNION ', $union);
+        foreach (Yii::app()->db->getCommandBuilder()->createSqlCommand($sql)->queryAll() as $i){
+            $items[$i['RatingId']][] = $i;
+        }
+        
+        return $items;
+    }
     
     
 }

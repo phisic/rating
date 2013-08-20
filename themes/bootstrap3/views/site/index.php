@@ -21,7 +21,7 @@ foreach($rlist['Rating'] as $r){
                     <span class="label label-info">#<?=$n?></span>
                     <strong><?=$i['Keyword']?></strong>
                 </div>
-                <div>Web Score: <strong><?=round($i['Rank']/1000)?>K</strong> <span class="label label-success">+1.5K</span></div>
+                <div>Web Score: <strong><?=round($i['Rank']/1E6)?>K</strong> <span class="label label-success">+1.5K</span></div>
                 <?php if(isset($i['Description'])){ ?> <?=$i['Description']?> <a href="">read more</a> <?php } ?>
             </div>
         </div> 
@@ -29,62 +29,40 @@ foreach($rlist['Rating'] as $r){
     </div>
     <div class="span4">
         <div class="row-fluid"><div class="span4"><span class="label label-success">Growing popularity</span></div></div> 
+        <?php $n=0; if(isset($rlist['Growing'][$r['Id']]))foreach ($rlist['Growing'][$r['Id']] as $k=>$i){ $n++;?>
         <div class="row-fluid vlist">
             <div class="span4">
-                <img src="http://t1.gstatic.com/images?q=tbn:ANd9GcRv_a_Ob5prt3l6EbaIbrwS5aEDd8XSXmz4VQqPWVKKBuq0X4PoQxzjdkttlaQmyTUAQaI3AgWsNQ">
+                <img src="<?=$i['Image']?>">
             </div>
             <div class="span8">
                 <div>
-                    <span class="label label-success">#1</span>
-                    <strong>Jared Remy</strong>
+                    <span class="label label-info">#<?=$n?></span>
+                    <strong><?=$i['Keyword']?></strong>
                 </div>
-                <div>Web Score: 27000</div>
-                Jared W. Remy was arraigned in Waltham District
-            </div>
-        </div>    
-        <div class="row-fluid">
-            <div class="span4">
-                <img src="http://t1.gstatic.com/images?q=tbn:ANd9GcRv_a_Ob5prt3l6EbaIbrwS5aEDd8XSXmz4VQqPWVKKBuq0X4PoQxzjdkttlaQmyTUAQaI3AgWsNQ">
-            </div>
-            <div class="span8">
-                <div>
-                    <span class="label label-success">#2</span>
-                    <strong>Jared Remy</strong>
-                </div>
-                <div>Web Score: 27000</div>
-                Jared W. Remy was arraigned in Waltham District
+                <div>Web Score: <strong><?=round($i['Rank']/1E6)?>K</strong> <span class="label label-success">+1.5K</span></div>
+                <?php if(isset($i['Description'])){ ?> <?=$i['Description']?> <a href="">read more</a> <?php } ?>
             </div>
         </div> 
+        <?php } ?>
 
     </div>
     <div class="span4">
         <div class="row-fluid"><div class="span4"><span class="label label-important">Losing popularity</span></div></div> 
+        <?php $n=0; if(isset($rlist['Losing'][$r['Id']]))foreach ($rlist['Losing'][$r['Id']] as $k=>$i){ $n++;?>
         <div class="row-fluid vlist">
             <div class="span4">
-                <img src="http://t1.gstatic.com/images?q=tbn:ANd9GcRv_a_Ob5prt3l6EbaIbrwS5aEDd8XSXmz4VQqPWVKKBuq0X4PoQxzjdkttlaQmyTUAQaI3AgWsNQ">
+                <img src="<?=$i['Image']?>">
             </div>
             <div class="span8">
                 <div>
-                    <span class="label label-important">#1</span>
-                    <strong>Jared Remy</strong>
+                    <span class="label label-info">#<?=$n?></span>
+                    <strong><?=$i['Keyword']?></strong>
                 </div>
-                <div>Web Score: 27000</div>
-                Jared W. Remy was arraigned in Waltham District
-            </div>
-        </div>    
-        <div class="row-fluid">
-            <div class="span4">
-                <img src="http://t1.gstatic.com/images?q=tbn:ANd9GcRv_a_Ob5prt3l6EbaIbrwS5aEDd8XSXmz4VQqPWVKKBuq0X4PoQxzjdkttlaQmyTUAQaI3AgWsNQ">
-            </div>
-            <div class="span8">
-                <div>
-                    <span class="label label-important">#2</span>
-                    <strong>Jared Remy</strong>
-                </div>
-                <div>Web Score: 27000</div>
-                Jared W. Remy was arraigned in Waltham District
+                <div>Web Score: <strong><?=round($i['Rank']/1E6)?>K</strong> <span class="label label-success">+1.5K</span></div>
+                <?php if(isset($i['Description'])){ ?> <?=$i['Description']?> <a href="">read more</a> <?php } ?>
             </div>
         </div> 
+        <?php } ?>
 
     </div>
 </div>
