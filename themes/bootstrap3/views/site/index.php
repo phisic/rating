@@ -4,7 +4,7 @@
     We build ratings for most popular on the web and we happy if you join to us.
 </div>
 <?php 
-$rlist = Yii::app()->helper->shortRating();
+$rlist = Yii::app()->helper->getShortRating(0, 20);
 foreach($rlist['Rating'] as $r){
     ?>
 <h1><?=$r['Name']?></h1>
