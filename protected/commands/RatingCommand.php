@@ -11,10 +11,10 @@ class RatingCommand extends CConsoleCommand {
             $r = Yii::app()->db->getCommandBuilder()->createFindCommand('item', $c)->queryAll();
             foreach ($r as $row) {
                 $out = '';
-                if($pos = strpos($row['Keyword'], ','))
-                   $row['Keyword'] = substr ($row['Keyword'], 0, $pos);
-                $url = '\'http://search.aol.com/aol/search?s_it=topsearchbox.search&v_t=comsearch51&q=%22'.urlencode($row['Keyword']).'%22\'';
-                $cmd = 'lynx -source '.$url;
+                if ($pos = strpos($row['Keyword'], ','))
+                    $row['Keyword'] = substr($row['Keyword'], 0, $pos);
+                $url = '\'http://search.aol.com/aol/search?s_it=topsearchbox.search&v_t=comsearch51&q=%22' . urlencode($row['Keyword']) . '%22\'';
+                $cmd = 'lynx -source ' . $url;
                 exec($cmd, $out);
                 //usleep(500000);
                 echo $row['Keyword'] . "\n";
@@ -22,17 +22,30 @@ class RatingCommand extends CConsoleCommand {
                 file_put_contents('index.html', $out);
                 $p = new StringParser($out);
                 $rank = $p->between('About&nbsp;', '&nbsp;results');
-                if(!$rank)
+                if (!$rank)
                     continue;
                 $rank = $rank->remove(',')->get();
-                echo $rank."\n";
+                echo $rank . "\n";
                 $c2 = new CDbCriteria();
                 $c2->addColumnCondition(array('Id' => $row['Id']));
                 $date = date('Y-m-d H:i:s');
                 $r = Yii::app()->db->getCommandBuilder()->createInsertCommand('item_history', array('ItemId' => $row['Id'], 'Rank' => $rank, 'DateCreated' => $date))->execute();
-                $r = Yii::app()->db->getCommandBuilder()->createUpdateCommand('item', array('Rank' => $rank, 'RankDate'=>$date), $c2)->execute();
+                $r = Yii::app()->db->getCommandBuilder()->createUpdateCommand('item', array('Rank' => $rank, 'RankDate' => $date), $c2)->execute();
             }
         } while ($r);
+    }
+
+    public function actionImage() {
+        list($width, $height) = getimagesize($filename);
+        $new_width = $width * $percent;
+        $new_height = $height * $percent;
+
+
+        $image_p = imagecreatetruecolor($new_width, $new_height);
+        $image = imagecreatefromjpeg($filename);
+        imagecopyresampled($image_p, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+
+        imagejpeg($image_p, null, 100);
     }
 
 }

@@ -68,6 +68,10 @@ body{
 .vlist{
     margin-bottom: 10px;
 }
+.rating {
+    width:200px;
+    text-align: center;
+}
 @media (max-width: 980px) {
 	/* Enable use of floated navbar text */
 	.navbar-text.pull-right {

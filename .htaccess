@@ -1,8 +1,10 @@
 IndexIgnore */*
 RewriteEngine on
 
-# backend address
-RewriteRule ^admin backend.php
+RewriteCond %{REQUEST_FILENAME} !-s
+RewriteRule  ^rt/p([0-9]+)-([0-9]+)x([0-9]+)\.jpg$  /rt.php?id=$1&width=$2&height=$3  [PT,L]
+RewriteCond %{REQUEST_FILENAME} !-s
+RewriteRule  ^rt/r([0-9]+)-([0-9]+)x([0-9]+)\.jpg$  /rt.php?rid=$1&width=$2&height=$3  [PT,L]
 
 # if a directory or a file exists, use it directly
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -12,3 +14,31 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . index.php
 
 AddDefaultCharset utf-8
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml application/xml application/xhtmlxml text/javascript text/css application/x-javascript
+    BrowserMatch ^Mozilla/4 gzip-only-text/html
+    BrowserMatch ^Mozilla/4.0[678] no-gzip
+    BrowserMatch bMSIE !no-gzip !gzip-only-text/html
+    <ifmodule mod_gzip.c>
+       mod_gzip_on Yes
+       mod_gzip_item_include file \.js$
+       mod_gzip_item_include file \.css$
+    </ifmodule>
+</IfModule>
+
+<IfModule mod_headers.c>
+    <FilesMatch ".(js|css|flv|swf|ico|gif|jpg|jpeg|png)$">
+       Header set Cache-Control "max-age=86400, public, must-revalidate"
+       Header append Cache-Control "public"
+       Header set "Pragma:" "Public"
+    </FilesMatch>
+</IfModule>
+
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    <FilesMatch "\.(ico|flv|mp3|png|gif|jpg|jpeg|swf|pdf|css|js)$">
+       ExpiresDefault "access plus 1 year"
+    </FilesMatch>
+</IfModule>

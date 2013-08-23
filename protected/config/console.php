@@ -7,7 +7,7 @@ return CMap::mergeArray(require(dirname(__FILE__) . '/base.php'), array(
             ),
             'components' => array(
                 'db' => array(
-                    'password' => '',
+                    'password' => '1',
                 ),
                 'bb' => array(
                     'class' => 'ext.BBOpen',

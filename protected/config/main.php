@@ -3,7 +3,7 @@
 return CMap::mergeArray(require(dirname(__FILE__) . '/main.sample.php'), array(
             'components' => array(
                 'db' => array(
-                    'password' => '',
+                    'password' => '1',
                 ),
                 'log' => array(
                     'routes' => array(
