@@ -85,9 +85,8 @@ class Helper extends CApplicationComponent {
         return Yii::app()->db->getCommandBuilder()->createCountCommand('rating', $c)->queryScalar();
     }
 
-    public function getItems($ratingIds, $limit=10){
+    public function getRatingItems($ratingIds, $limit=10){
         $items = $union = array();
-
         $s = '(SELECT Id,ri.RatingId,Keyword,Rank,RankDelta,Image, "" as Description FROM item t ';
         $s .= 'JOIN rating2item ri ON ri.ItemId = t.Id and ri.RatingId=:rid ';
         $s .= 'ORDER BY t.Rank DESC LIMIT '.$limit .')';
@@ -99,6 +98,22 @@ class Helper extends CApplicationComponent {
             $items[$i['RatingId']][] = $i;
         }
         return $items;
+    }
+    
+    public function getItems($ratingId, CDbCriteria $c){
+        $c->select = 'Id,ri.RatingId,Keyword,Rank,RankDelta,Image, "" as Description';
+        $c->join = 'JOIN rating2item ri ON ri.ItemId = t.Id and ri.RatingId=:rid';
+        $c->order = 't.Rank DESC';
+        $c->params[':rid'] = $ratingId;
+        
+        return Yii::app()->db->getCommandBuilder()->createFindCommand('item', $c)->queryAll();
+    }
+    
+    public function getItemCount($ratingId){
+        $c = new CDbCriteria();
+        $c->join = 'JOIN rating2item ri ON ri.ItemId = t.Id and ri.RatingId=:rid';
+        $c->params[':rid'] = $ratingId;
+        return Yii::app()->db->getCommandBuilder()->createCountCommand('item', $c)->queryScalar();
     }
 
     public function getItemsGrowing($ratingIds, $limit=10){

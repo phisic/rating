@@ -20,8 +20,8 @@
 	margin-top: 10px;
 }
 
-.vlist{
-    margin-bottom: 10px;
+.pager .selected a{
+    background-color: #ccc;
 }
 .rating .thumbnail{
     width:220px;

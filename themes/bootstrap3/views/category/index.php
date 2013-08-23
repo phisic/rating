@@ -8,7 +8,7 @@
 
             <?php foreach ($r3 as $r) { ?> 
                 <div class="thumbnail">
-                    <a href="" title="View full rating <?= $r['Name'] ?>">
+                    <a href="<?=Yii::app()->seoUrl('rating',$r['Name']);?>" title="View full rating <?= $r['Name'] ?>">
                     <div><strong><?= $r['Name'] ?></strong></div>
                     <div><img alt="<?= $r['Name'] ?>" src="/rt/r<?= $r['Id'] ?>-200x200.jpg"></a></div>
                     <?php foreach ($r['i'][$r['Id']] as $n => $i) { ?>

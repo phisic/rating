@@ -21,7 +21,7 @@ class CategoryController extends Controller {
 
         $ratings = Yii::app()->helper->getRating($categoryId, $c2);
         foreach ($ratings as &$r) {
-            $r['i'] = Yii::app()->helper->getItems(array($r['Id']), 3);
+            $r['i'] = Yii::app()->helper->getRatingItems(array($r['Id']), 3);
         }
 
         $this->render('index', array('ratings' => $ratings, 'pager' => $pager));

@@ -10,14 +10,14 @@ class WebApplication extends CWebApplication {
     }
 
     public function seoUrl($route, $string) {
-        $string = strtolower(str_replace(' ', '_', $string));
+        $string = strtolower(str_replace(array(' ', '&'), array('_','a-n-d'), $string));
         $string = trim($string,'_');
         
         return $this->createUrl($route.'/'.$string);
     }
     
     public function decodeSeoUrl($url){
-        return str_replace('_', ' ', $url);
+        return str_replace(array('_', 'a-n-d'), array(' ','&'), $url);
     }
 
 }
