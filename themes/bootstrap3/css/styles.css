@@ -19,3 +19,11 @@
 .list_item{
 	margin-top: 10px;
 }
+
+.vlist{
+    margin-bottom: 10px;
+}
+.rating .thumbnail{
+    width:200px;
+    margin-bottom: 10px;
+}
