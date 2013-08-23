@@ -54,7 +54,7 @@ class Helper extends CApplicationComponent {
             $list['Rating'][$r['Id']] = $r;
         }
         $ratings = array_keys($list['Rating']);
-        $list['Items'] = $this->getItems($ratings);
+        $list['Items'] = $this->getRatingItems($ratings);
         $list['Growing'] = $this->getItemsGrowing($ratings);
         $list['Losing'] = $this->getItemsLosing($ratings);
         return $list;
