@@ -7,16 +7,16 @@
 $rlist = Yii::app()->helper->getShortRating(0, 20);
 foreach($rlist['Rating'] as $r){
     ?>
+<div class="clearfix">
 <h1><?=$r['Name']?></h1>
-<div class="row-fluid vlist">
-    <div class="span4">
-        <div class="row-fluid"><div class="span4"><span class="label label-info">Most popular</span></div></div> 
+    <div class="col-lg-4 padding_left0">
+        <span class="label label-info">Most popular</span>
         <?php $n=0; foreach ($rlist['Items'][$r['Id']] as $k=>$i){ $n++;?>
-        <div class="row-fluid vlist">
-            <div class="span4">
-                <img src="<?=$i['Image']?>">
+        <div class="list_item clearfix">
+            <div class="col-lg-4 padding_left0">
+                <img class="img-thumbnail" src="<?=$i['Image']?>">
             </div>
-            <div class="span8">
+            <div class="col-lg-8 padding_left0">
                 <div>
                     <span class="label label-info">#<?=$n?></span>
                     <strong><?=$i['Keyword']?></strong>
@@ -27,14 +27,14 @@ foreach($rlist['Rating'] as $r){
         </div> 
         <?php } ?>
     </div>
-    <div class="span4">
-        <div class="row-fluid"><div class="span4"><span class="label label-success">Growing popularity</span></div></div> 
+    <div class="col-lg-4 padding_left0">
+        <span class="label label-success">Growing popularity</span>
         <?php $n=0; if(isset($rlist['Growing'][$r['Id']]))foreach ($rlist['Growing'][$r['Id']] as $k=>$i){ $n++;?>
-        <div class="row-fluid vlist">
-            <div class="span4">
-                <img src="<?=$i['Image']?>">
+        <div class="list_item clearfix">
+            <div class="col-lg-4 padding_left0">
+                <img class="img-thumbnail" src="<?=$i['Image']?>">
             </div>
-            <div class="span8">
+            <div class="col-lg-8 padding_left0">
                 <div>
                     <span class="label label-info">#<?=$n?></span>
                     <strong><?=$i['Keyword']?></strong>
@@ -46,14 +46,14 @@ foreach($rlist['Rating'] as $r){
         <?php } ?>
 
     </div>
-    <div class="span4">
-        <div class="row-fluid"><div class="span4"><span class="label label-important">Losing popularity</span></div></div> 
+    <div class="col-lg-4 padding_left0">
+        <span class="label label-danger">Losing popularity</span>
         <?php $n=0; if(isset($rlist['Losing'][$r['Id']]))foreach ($rlist['Losing'][$r['Id']] as $k=>$i){ $n++;?>
-        <div class="row-fluid vlist">
-            <div class="span4">
-                <img src="<?=$i['Image']?>">
+        <div class="list_item clearfix">
+            <div class="col-lg-4 padding_left0">
+                <img class="img-thumbnail" src="<?=$i['Image']?>">
             </div>
-            <div class="span8">
+            <div class="col-lg-8 padding_left0">
                 <div>
                     <span class="label label-info">#<?=$n?></span>
                     <strong><?=$i['Keyword']?></strong>
@@ -66,10 +66,10 @@ foreach($rlist['Rating'] as $r){
 
     </div>
 </div>
-<div class="row-fluid"><div class="span5"><a>View Full Rating</a> (1678 items)</div></div>
+<div class="clearfix"></div><br /><div class="col-lg-5"><a>View Full Rating</a> (1678 items)</div>
 <?php } ?>
 
-<h1>Most Famous Billionaires on the planet</h1>
+<!--h1>Most Famous Billionaires on the planet</h1>
 <div class="row-fluid vlist">
     <div class="span4">
         <div class="row-fluid"><div class="span4"><span class="label label-info">Most popular</span></div></div> 
@@ -162,4 +162,4 @@ foreach($rlist['Rating'] as $r){
 
     </div>
 </div>
-<div class="row-fluid"><div class="span5"><a>View Full Rating</a> (1678 items)</div></div>
+<div class="row-fluid"><div class="span5"><a>View Full Rating</a> (1678 items)</div></div-->

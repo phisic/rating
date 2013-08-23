@@ -1,7 +1,4 @@
-$(document).ready(function(){
-	//
-});
-/*$(document).on('mouseover', '.category_list a', function(){
+$(document).on('mouseover', '.category_list a', function(){
 	$(this).parent().parent().find('a.active').removeClass('active');
 	$(this).addClass('active');
 	$($(this).attr('data-target')).parent().find('div').hide();
@@ -9,4 +6,4 @@ $(document).ready(function(){
 });
 $(document).on('mouseout', '.category_list a', function(){
 	//$(this).removeClass('active');
-});*/
+});

@@ -1,75 +1,80 @@
-<?php /* @var $this Controller */ ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <title><?php echo CHtml::encode($this->pageTitle); ?></title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo CHtml::encode($this->pageTitle); ?></title>
-    <meta name="description" content="" />
-    <meta name="keyword" content="" />
     <!-- Bootstrap -->
-    <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/bootstrap.css" rel="stylesheet" media="screen">
-    <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/bootstrap-responsive.css" rel="stylesheet" media="screen">
+    <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/styles.css" rel="stylesheet" media="screen">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/html5shiv.js"></script>
+      <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/respond.min.js"></script>
+    <![endif]-->
   </head>
   <body>
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid topcontainer fixcontainer">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <div class="topsearchform pull-right hidden-desktop">
-            <form class="form-search" style="margin: 0px;">
-              <div class="control-group">
-                  <div class="input-append">
-                      <input type="text" class="input-medium search-query" />
-                      <button type="submit"></button>
-                      <span class="add-on"><i class="icon-search search-query"></i></span>
-                  </div>
+    <div class="container maincontainer">
+      <nav class="navbar navbar-default top-nav-bar navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <form class="navbar-form navbar-left visible-xs pull-right top-search-form" role="search">
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Search">
               </div>
+              <button type="submit" class="btn btn-default">Submit</button>
             </form>
-          </div><!--.topsearchform-->
-          <div id="brand_name_container">
-            <a href="/" id="brand_name" class="brand"><span class="text-info">Open</span><span class="text-success">Web</span><span class="text-error">Rating</span></a>
-          </div><!--#brand_name_container-->
-          <div class="collapse nav-collapse">
-            <p class="navbar-text pull-right">
-              <a href="#loginform" role="button" data-toggle="modal" class="navbar-link">Login</a> | <a href="#" class="navbar-link">Register</a>
-            </p>
-            <div class="topsearchform pull-right visible-desktop">
-              <form class="form-search" style="margin: 0px;">
-                <div class="control-group">
-                    <div class="input-append">
-                        <input type="text" class="input-medium search-query" />
-                        <button type="submit"></button>
-                        <span class="add-on"><i class="icon-search search-query"></i></span>
-                    </div>
-                </div>
-              </form>
-            </div><!--.topsearchform-->
-                <?=Yii::app()->helper->mainMenu();?>
-              <!--.nav-->
+            <a class="navbar-brand" href="/"><span class="text-info">Open</span><span class="text-success">Web</span><span class="text-danger">Rating</span></a>
           </div>
+
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <?=Yii::app()->helper->mainMenu();?>
+            <form class="navbar-form navbar-left hidden-xs" role="search">
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Search">
+              </div>
+              <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+              <!--li><a href="#">Login</a></li>
+                  <li><a href="#">Register</a></li-->
+              <li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span><b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Login</a></li>
+                  <li><a href="#">Register</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div><!-- /.navbar-collapse -->
         </div>
-      </div><!--navbar-inner-->
-    </div><!--.navbar-->
-    <div class="container-fluid fixcontainer">
+      </nav>
+      <div id="content">
+        
         <?php echo $content; ?>
-      <div class="clear-fix"></div>
-    </div>
-    <div class="navbar navbar-inverse navbar-fixed-bottom">
-      <div class="navbar-inner">
-        <div class="fixcontainer">
-          <span class="brand" style="font-size: 10pt;"><?php echo date('Y'); ?> PopularOnWeb   All Rights Reserved</span>
-        </div>
+        
       </div>
+      <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+        <div class="container">
+          <a class="navbar-brand" href="/"><?php echo date('Y'); ?> PopularOnWeb   All Rights Reserved</a>
+        </div>
+      </nav>
     </div>
+    
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery-1.10.2.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/bootstrap.min.js"></script>
-    <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/scripts.js"></script>
   </body>
 </html>

@@ -33,7 +33,7 @@ class Helper extends CApplicationComponent {
     public function mainMenu(){
         $c = new CDbCriteria(array('select'=>'Name'));
         $c->addColumnCondition(array('PId'=>0));
-        $m = '<ul class="nav">';
+        $m = '<ul class="nav navbar-nav">';
         foreach ($this->categories as $i){
             $m .= '<li><a href="'.Yii::app()->seoUrl('category', $i['Name']).'">'.$i['Name'].'</a></li>';
         }
@@ -60,29 +60,15 @@ class Helper extends CApplicationComponent {
         return $list;
     }
     
-    public function getRating($categoryId = 0, CDbCriteria $c = null){
-        if(!$c)
-            $c = new CDbCriteria ();
-        $c->select = 'Name,CategoryId,Id';
-        $c->order = 'Weight Desc';
-        
+    public function getRating($categoryId){
+        $c = new CDbCriteria(array('select'=>'Name,CategoryId,Id','order' => 'Weight Desc'));
         if(!empty($this->categoryPointer[$categoryId])){
             $categories[] = $categoryId;
             $this->getChildCategories($this->categoryPointer[$categoryId], $categories);
             $c->addInCondition('CategoryId', $categories);
+            
+            return Yii::app()->db->getCommandBuilder()->createFindCommand('rating', $c)->queryAll();
         }
-        
-        return Yii::app()->db->getCommandBuilder()->createFindCommand('rating', $c)->queryAll();
-    }
-    
-    public function getRatingCount($categoryId = 0){
-        $c = new CDbCriteria();
-        if(!empty($this->categoryPointer[$categoryId])){
-            $categories[] = $categoryId;
-            $this->getChildCategories($this->categoryPointer[$categoryId], $categories);
-            $c->addInCondition('CategoryId', $categories);
-        }
-        return Yii::app()->db->getCommandBuilder()->createCountCommand('rating', $c)->queryScalar();
     }
     
     public function getItems($ratingIds, $limit=10){
