@@ -7,7 +7,7 @@ class ExportCommand extends CConsoleCommand {
     public function actionBillionaires() {
         $list = json_decode(file_get_contents('../data/billionaires.json'));
         $ratingName = 'Most Famous Billionaires in the World';
-        $ratingId = $this->createRating($ratingName);
+        $ratingId = $this->createRating($ratingName, 'Billionaires');
 
         foreach ($list as $i) {
             $url = $this->forbesUrl . $i[2];
@@ -41,8 +41,8 @@ class ExportCommand extends CConsoleCommand {
             $newItems = 0;
             foreach ($r['data']['chartList'] as $c) {
                 $name = 'Most Popular ' . $c['visibleName'];
-                $rId = $this->createRating($name);
-
+                $rId = $this->createRating($name, $c['visibleName']);
+                
                 foreach ($c['entityList'] as $i) {
                     $this->createItem($i['title'], isset($i['imageInfo']['url']) ? $i['imageInfo']['url'] : null, $rId);
                     $newItems++;
@@ -114,7 +114,7 @@ class ExportCommand extends CConsoleCommand {
             $u[$h] = $t;
         }
         foreach ($u as $url => $categoryName) {
-            $ratingId = $this->createRating('Most Famous ' . $categoryName);
+            $ratingId = $this->createRating('Most Famous ' . $categoryName, $categoryName);
             $page = 1;
             $url = 'http://www.biography.com' . $url . '/all?view=gallery&sort=last-name&page=';
             echo $categoryName . "\n";
@@ -174,7 +174,7 @@ class ExportCommand extends CConsoleCommand {
         }
     }
 
-    protected function createRating($name) {
+    protected function createRating($name, $context) {
         $date = date('Y-m-d H:i:s');
         $c1 = new CDbCriteria(array('select' => 'Id'));
         $c1->addColumnCondition(array('Name' => $name));

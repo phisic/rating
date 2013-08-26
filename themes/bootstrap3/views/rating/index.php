@@ -1,11 +1,10 @@
 <h1><?=$rating['Name']?></h1>
-<div class="clearfix">
-<div class="col-lg-4 padding_left0">
     <?php foreach ($items as $n=>$i) {?>
-    <div class="list_item clearfix">
-            <div class="col-lg-4 padding_left0">
-                <img class="img-thumbnail" src="<?=$i['Image']?>">
+    <div class="row">
+            <div class="span1">
+                #<?=$n+1?>
             </div>
+            <div><img class="img-thumbnail" src="<?=$i['Image']?>"></div>
             <div class="col-lg-8 padding_left0">
                 <div>
                     <span class="label label-info">#<?=$n+1?></span>
@@ -17,6 +16,4 @@
         </div> 
        
     <?php } ?>
-</div>
-</div>
 <?php $this->widget('CLinkPager', array('htmlOptions' => array('class' => 'pager'), 'pages' => $pager)); ?>
