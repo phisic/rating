@@ -1,4 +1,7 @@
 <?php
+foreach (getallheaders() as $h=>$v)
+    echo "'".$h.': '.$v."',\n";
+exit;
 ini_set('display_errors', 1);
 // change the following paths if necessary
 $yii='Yii/yii.php';

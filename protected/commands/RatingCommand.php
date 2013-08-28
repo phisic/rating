@@ -8,22 +8,22 @@ class RatingCommand extends CConsoleCommand {
         $c->addCondition('(RankDate < (now()-INTERVAL 3 DAY)) OR (RankDate Is NULL)');
         $c->order = 'RankDate';
         $c->limit = 100;
+        $px = new StringParser();
         do {
             $r = Yii::app()->db->getCommandBuilder()->createFindCommand('rating', $c)->queryAll();
             foreach ($r as $row) {
-                $out = '';
                 if ($pos = strpos($row['Keyword'], ','))
                     $row['Keyword'] = substr($row['Keyword'], 0, $pos);
-                $url = 'http://search.aol.com/aol/search?s_it=topsearchbox.search&v_t=comsearch51&q=' . urlencode($row['Keyword']);
-                $cmd = 'lynx -source ' . $url; echo $cmd."\n";
-                exec($cmd, $out);
-                //usleep(500000);
+                if ($pos = strpos($row['Keyword'], ' '))
+                    $row['Keyword'] = '"'.$row['Keyword'].'"';
+                $row['Keyword'] = $row['Context'] . ' '. $row['Keyword'];
+                
+                $url = 'https://www.google.com/search?client=ubuntu&channel=fs&q='. urlencode($row['Keyword']).'&ie=utf-8&oe=utf-8';
+                $out = $px->proxy(urlencode($row['Keyword']));
+                sleep(3);
                 echo $row['Keyword'] . "\n";
-                $out = join(' ', $out);
-                file_put_contents('index.html', $out);
                 $p = new StringParser($out);
-                $rank = $p->between('About&nbsp;', '&nbsp;results');
-                exit;
+                $rank = $p->between('<div id="resultStats">About ', ' results');
                 if (!$rank)
                     continue;
                 $rank = $rank->remove(',')->get();
