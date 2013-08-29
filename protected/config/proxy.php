@@ -1,5 +1,11 @@
 <?php
+
 return array(
+    'rxproxy.com' => array(
+        'url' => 'http://rxproxy.com/index.php?rxproxygf=aHR0cDovL3d3dy5nb29nbGUuY29tL3NlYXJjaA%253D%253D&site=&source=hp&q={$q}&btnG=Search',
+        'cook' => '__utma=203470675.119450669.1377676871.1377676871.1377676871.1;__utmc=203470675;__utmz=203470675.1377676871.1.1.utmccn=(organic)|utmcsr=google|utmctr=|utmcmd=organic;COOKIE%253BNID%253B%252F%253B.google.com=67%253DY6KKuILF2odNx44Ss8qNPSiVVmzl2d2ki2XnS0_brJXLgutJ1MlN2kD13LAxUTZpUyHxcw9jHXRtdTBRFiauYG_GzE3cQ9JoD6epOKy6-Esm15bSfgcVhirkebwy5NA_%253B;COOKIE%253BPREF%253B%252F%253B.google.com=ID%253Df2fd9ca54583b518%253AU%253D759bd930174ed688%253AFF%253D0%253ATM%253D1377676887%253ALM%253D1377676898%253AS%253DY-tKKzpknfp8Tayz%253B;__utmb=203470675;'
+    ),
+    
     '4proxy.de' => array(
         'url' => 'http://www.4proxy.de/index.php?____pgfa=http%253A%252F%252Fwww.google.com%252Fsearch&site=&source=hp&q={$q}&btnG=Suche',
         'cook' => 'imgcookie_accept=1;flags=2e5;__utmz=150896307.1377672859.1.1.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided);__utmc=150896307;__utmb=150896307.2.10.1377672859;__utma=150896307.132344901.1377672859.1377672859.1377672859.1;__atuvc=2%7C35;COOKIE%253BPREF%253B%252F%253B.google.de=ID%253D9be6e8f8071b0178%253AU%253Dd53561d01ca5ac7b%253AFF%253D0%253ATM%253D1377672885%253ALM%253D1377672902%253AS%253D69yRWI4yooNAZJYu%253B;COOKIE%253BPREF%253B%252F%253B.google.com=ID%253Df6a73c1b21afced8%253AU%253D5bce37f48823a13b%253AFF%253D0%253ATM%253D1377672884%253ALM%253D1377672901%253AS%253DVEt7SyqbEbxDPSVI%253B;COOKIE%253BNID%253B%252F%253B.google.de=67%253DZWaw_xkvQiQWdYbyaNCLkrSpjDI0wItl-Qq3S0yWwwmcaF6q2ogLCVwnG4E4gNaJPplR-36iDcbiIyLPfum_WkxOqYnrDN35uIQw6QX2ZIFDnU5yVVYywM3kIyemF6im%253B;COOKIE%253BNID%253B%252F%253B.google.com=67%253DS9x06PeNwwyFiibtR2a9POR9ZINXbs41oiVqEqLNTHWiVhLMEX2nGP86ZroEqs5LP6ByIDdF-P0W9G7L5BkoK1eUmpuYkyCLO3hALfzXYM6Ai0hrJi0fGyBY3uqBW_Am%253B;'
@@ -46,8 +52,7 @@ return array(
         'cook' => 'flags=3ed;COOKIE%253BPREF%253B%252F%253B.google.com=ID%253D957ab8b8ff265593%253AU%253D8c656c1f9ffe0ef6%253AFF%253D0%253ATM%253D1377636216%253ALM%253D1377636231%253AGBV%253D1%253AS%253DRyYs16qnZ60RFiIg%253B;COOKIE%253BNID%253B%252F%253B.google.com=67%253DvCa0GsL5vkS3sZSFkkDRJ-kPiPpmdWuJ0MDTmwakOh1sK1QCc6if3wi-_sbb-nVZvCUpknmcQzZFFCNnnpZsNSfTeb7vqzt3arFyqAi1uDTLvWGtJJqLpXnKVeNEasgv%253B;'
     ),
     
-    //;([^'\n]*)\n ;
-    
+    // ;    
     
     
     
