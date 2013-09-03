@@ -56,7 +56,7 @@ class ExportCommand extends CConsoleCommand {
     public function actionWiki() {
         $c = new CDbCriteria(array('select' => 't.Id,Keyword'));
         $c->join = 'LEFT JOIN wiki_log it ON t.Id = it.ItemId';
-        $c->addCondition('it.DateCreated < (NOW() - Interval 7 Day) OR it.dateCreated IS NULL');
+        $c->addCondition('it.DateCreated < (NOW() - Interval 3 MONTH) OR it.dateCreated IS NULL');
         $c->limit = 100;
         $p = new StringParser();
         do {
@@ -88,6 +88,7 @@ class ExportCommand extends CConsoleCommand {
                         $data['ItemId'] = $i['Id'];
                         $data['DateCreated'] = date('Y-m-d H:i:s');
                         Yii::app()->db->getCommandBuilder()->createInsertCommand('item_text', $data)->execute();
+                        break;
                     }
                 }
                 Yii::app()->db->getCommandBuilder()->createSQLCommand('REPLACE INTO wiki_log values(' . $i['Id'] . ',"' . date('Y-m-d H:i:s') . '")')->execute();

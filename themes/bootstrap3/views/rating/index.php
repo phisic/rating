@@ -1,18 +1,33 @@
 <h1><?=$rating['Name']?></h1>
+<div class="list_item clearfix">
+    <div class="col-lg-1 padding_left0"><strong>#</strong></div>
+    <div class="col-lg-2 padding_left0"><strong>Image</strong></div>
+    <div class="col-lg-4 padding_left0"><strong>Name</strong></div>
+    <div class="col-lg-2 padding_left0" style='text-align: center;'><strong>Web score</strong></div>
+    <div class="col-lg-2 padding_left0"><strong>+/-</strong></div>
+    <div class="col-lg-1 padding_left0"><strong>Updated</strong></div>
+</div>
     <?php foreach ($items as $n=>$i) {?>
-    <div class="row">
-            <div class="span1">
-                #<?=$n+1?>
+    <div class="list_item clearfix">
+            <div class="col-lg-1 padding_left0">
+                <?=($n+1+$pager->offset)?>
             </div>
-            <div><img class="img-thumbnail" src="<?=$i['Image']?>"></div>
-            <div class="col-lg-8 padding_left0">
-                <div>
-                    <span class="label label-info">#<?=$n+1?></span>
+            <div class="col-lg-2 padding_left0"><img class="img-thumbnail" src="/rt/p<?=$i['Id'].'-200x200.jpg'?>"></div>
+            <div class="col-lg-4 padding_left0">
                     <strong><?=$i['Keyword']?></strong>
-                </div>
-                <div>Web Score: <strong><?=round($i['Rank']/1E6)?>K</strong> <span class="label label-success">+1.5K</span></div>
-                <?php if(isset($i['Description'])){ ?> <?=$i['Description']?> <a href="">read more</a> <?php } ?>
+                    <div><?=isset($i['Description'])?$i['Description']:''?></div>
             </div>
+            <div class="col-lg-2 padding_left0" style="text-align: center;"><strong><?=$i['Rank']?></strong></div>
+            <div class="col-lg-2 padding_left0">
+                <?php if($i['RankDelta']==0){}?>
+                
+                <?php if($i['RankDelta']>0){?>
+                <span class="label label-success">+<?=$i['RankDelta']?></span>
+                <?php }elseif($i['RankDelta']<0){ ?>
+                <span class="label label-danger"><?=$i['RankDelta']?></span>
+                <?php }?>
+            </div>
+            <div class="col-lg-1 padding_left0"><?=$i['RankDate']?></div>
         </div> 
        
     <?php } ?>

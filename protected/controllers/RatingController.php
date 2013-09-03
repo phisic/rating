@@ -20,5 +20,9 @@ class RatingController extends Controller {
         $items = Yii::app()->helper->getItems($Id, $c2);
         $this->render('index', array('items' => $items,'rating'=>$rating, 'pager' => $pager));
     }
+    
+    public function actionItem($rating, $item){
+        
+    }
 
 }

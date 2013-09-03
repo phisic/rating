@@ -24,11 +24,12 @@ return CMap::mergeArray(require(dirname(__FILE__) . '/base.php'), array(
                 ),
                 'urlManager' => array(
                     'rules' => array(
-                        '<controller:rating>/<rating:[\w]+>' => '<controller>/index',
-                        '<controller:category>/<category:[\w]+>' => '<controller>/index',
+                        '<controller:rating>/<rating:[\w-\']+>' => '<controller>/index',
+                        '<controller:category>/<category:[\w-\']+>' => '<controller>/index',
                         '<controller:\w+>/<id:\d+>' => '<controller>/view',
                         '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                         '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+                        '<keyword:[\w-\'\,\.]+>' => 'site/item',
                     ),
                 ),
                 'errorHandler' => array(

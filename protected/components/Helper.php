@@ -41,22 +41,27 @@ class Helper extends CApplicationComponent {
         return $m;
     }
 
-    public function getShortRating($category = 0, $limit = 0){
+    public function getShortRating($category = 0, $limit = 0, $offset = 0, $itemLimit = 5){
         $c = new CDbCriteria(array('select'=>'Name,CategoryId,Id','order' => 'Weight Desc'));
+        if(!empty($offset))
+            $c->offset = $offset;
         if(!empty($category))
             $c->addInCondition(array('CategoryId', (array)$category));
         if($limit)
             $c->limit = $limit;
-
         $rating = Yii::app()->db->getCommandBuilder()->createFindCommand('rating', $c)->queryAll();
         $list = array();
         foreach ($rating as $r){
+            $c2 = new CDbCriteria();
+            $c2->addColumnCondition(array('RatingId'=>$r['Id']));
+            $r['count'] = Yii::app()->db->getCommandBuilder()->createCountCommand('rating2item', $c2)->queryScalar();
             $list['Rating'][$r['Id']] = $r;
+            
         }
         $ratings = array_keys($list['Rating']);
-        $list['Items'] = $this->getRatingItems($ratings);
-        $list['Growing'] = $this->getItemsGrowing($ratings);
-        $list['Losing'] = $this->getItemsLosing($ratings);
+        $list['Items'] = $this->getRatingItems($ratings, $itemLimit);
+        $list['Growing'] = $this->getItemsGrowing($ratings, $itemLimit);
+        $list['Losing'] = $this->getItemsLosing($ratings, $itemLimit);
         return $list;
     }
 
@@ -101,12 +106,21 @@ class Helper extends CApplicationComponent {
     }
     
     public function getItems($ratingId, CDbCriteria $c){
-        $c->select = 'Id,ri.RatingId,Keyword,ri.Rank,ri.RankDelta,Image, "" as Description';
+        $c->select = 't.Id,ri.RatingId,Keyword,ri.Rank,ri.RankDelta,Image, ri.RankDate';
         $c->join = 'JOIN rating2item ri ON ri.ItemId = t.Id and ri.RatingId=:rid';
         $c->order = 'ri.Rank DESC';
         $c->params[':rid'] = $ratingId;
+        $ids = $list= array();
+        foreach (Yii::app()->db->getCommandBuilder()->createFindCommand('item', $c)->queryAll() as $r){
+            $list[$r['Id']] = $r;
+        }
+        $c2 = new CDbCriteria(array('select'=>'ItemId,substr(Content,1,500) as Description'));
+        $c2->addInCondition('ItemId', array_keys($list));
+        foreach(Yii::app()->db->getCommandBuilder()->createFindCommand('item_text', $c2)->queryAll() as $t){
+            $list[$t['ItemId']]['Description'] = strip_tags($t['Description']);
+        }
         
-        return Yii::app()->db->getCommandBuilder()->createFindCommand('item', $c)->queryAll();
+        return array_merge(array(), $list);;
     }
     
     public function getItemCount($ratingId){

@@ -14,7 +14,7 @@
     require_once('protected/components/WebApplication.php');
     Yii::createApplication('WebApplication', $config);
     
-$width = array(200,300,500);
+$width = array(200,201,300,500);
 if (isset($_GET['id']) && isset($_GET['width']) && isset($_GET['height'])) {
     if(!in_array($_GET['width'], $width))
             exit;
@@ -32,7 +32,7 @@ if (isset($_GET['rid']) && isset($_GET['width']) && isset($_GET['height'])) {
     if(!in_array($_GET['width'], $width))
             exit;
     $rid = (int)$_GET['rid'];
-    $items = Yii::app()->helper->getItems(array($rid));
+    $items = Yii::app()->helper->getRatingItems(array($rid));
     
     if (isset($items[$rid][0]['Image'])) {
         $path = 'rt/r' . $rid . '-' . $_GET['width'] . 'x' . $_GET['height'] . '.jpg';
@@ -70,10 +70,7 @@ function imageResize($image, $thumb_width, $new_filename) {
     $aspect_ratio = (float) $height_orig / $width_orig;
     //calulate the thumbnail width based on the height
     $thumb_height = round($thumb_width * $aspect_ratio);
-    while ($thumb_height > $max_width) {
-        $thumb_width -= 10;
-        $thumb_height = round($thumb_width * $aspect_ratio);
-    }
+    
     $new_image = imagecreatetruecolor($thumb_width, $thumb_height);
 
     imagecopyresampled($new_image, $im, 0, 0, 0, 0, $thumb_width, $thumb_height, $width_orig, $height_orig);

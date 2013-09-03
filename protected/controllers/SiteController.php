@@ -25,9 +25,26 @@ class SiteController extends Controller {
      * when an action is not explicitly requested by users.
      */
     public function actionIndex() {
-        $this->pageTitle = Yii::app()->name.', find your '.Yii::app()->params['category'];
-        
-        $this->render('index');
+        $this->pageTitle = Yii::app()->name . ', find your ' . Yii::app()->params['category'];
+        $count = Yii::app()->helper->getRatingCount(0);
+        $pager = new CPagination($count);
+        $pager->pageSize = 5;
+
+        $list = Yii::app()->helper->getShortRating(0, $pager->getLimit(), $pager->getOffset());
+        $this->render('index', array('list' => $list, 'pager' => $pager));
+    }
+
+    public function actionItem($keyword) {
+        $name = Yii::app()->decodeSeoUrl($keyword);
+        $c = new CDbCriteria();
+        $c->addColumnCondition(array('Keyword' => $name));
+        $i = Yii::app()->db->getCommandBuilder()->createFindCommand('item', $c)->queryRow();
+        if (!empty($i)) {
+            $this->pageTitle = $i['Keyword'];
+        } else {
+            throw new CHttpException(404);
+        }
+        echo 'hello~';
     }
 
     /**
@@ -64,34 +81,32 @@ class SiteController extends Controller {
         }
         $this->render('contact', array('model' => $model));
     }
-    
-	public function actionAjaxLogin()
-	{
-		$model = new LoginForm;
-		$result = array('success' => false);
-		// collect user input data
-		if (isset($_POST['LoginForm'])) {
-			$model->attributes = $_POST['LoginForm'];
-			if ($model->validate() && $model->login())
-				$result = array('success' => true, 'url' => Yii::app()->user->returnUrl);
-		}
 
-		echo CJSON::encode($result);
-	}
+    public function actionAjaxLogin() {
+        $model = new LoginForm;
+        $result = array('success' => false);
+        // collect user input data
+        if (isset($_POST['LoginForm'])) {
+            $model->attributes = $_POST['LoginForm'];
+            if ($model->validate() && $model->login())
+                $result = array('success' => true, 'url' => Yii::app()->user->returnUrl);
+        }
 
-	public function actionAjaxRegister()
-	{
-		$model = new RegistrationForm;
-		$result = array('success' => false);
-		// collect user input data
-		if (isset($_POST['RegistrationForm'])) {
-			$model->attributes = $_POST['RegistrationForm'];
-			if ($model->validate() && $model->register())
-				$result = array('success' => true, 'url' => Yii::app()->user->returnUrl);
-		}
+        echo CJSON::encode($result);
+    }
 
-		echo CJSON::encode($result);
-	}
+    public function actionAjaxRegister() {
+        $model = new RegistrationForm;
+        $result = array('success' => false);
+        // collect user input data
+        if (isset($_POST['RegistrationForm'])) {
+            $model->attributes = $_POST['RegistrationForm'];
+            if ($model->validate() && $model->register())
+                $result = array('success' => true, 'url' => Yii::app()->user->returnUrl);
+        }
+
+        echo CJSON::encode($result);
+    }
 
     /**
      * Displays the login page
@@ -100,19 +115,17 @@ class SiteController extends Controller {
 
         $model = new LoginForm;
 
-	    if (isset($service))
-	    {
-		    $authIdentity = Yii::app()->eauth->getIdentity($service);
+        if (isset($service)) {
+            $authIdentity = Yii::app()->eauth->getIdentity($service);
 
-		    if ($authIdentity->authenticate())
-		    {
-			    $model->username = $authIdentity->getAttribute('email');
-			    if ($model->login(true))
-				    $this->redirect('/');
-		    }
-		    // Something went wrong, redirect to login page
-		    $this->redirect(array('/'));
-	    }
+            if ($authIdentity->authenticate()) {
+                $model->username = $authIdentity->getAttribute('email');
+                if ($model->login(true))
+                    $this->redirect('/');
+            }
+            // Something went wrong, redirect to login page
+            $this->redirect(array('/'));
+        }
     }
 
     /**

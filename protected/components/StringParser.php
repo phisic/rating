@@ -5,42 +5,15 @@ class StringParser {
     protected $buf = '';
     public $offset = 0;
     protected static $proxy = 0;
-    protected static $client = array(
-        array(
-            'Host: www.google.com',
-            'Accept: */*',
-            'Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3',
-            'Accept-Encoding: gzip,deflate',
-            'Accept-Language: en-US,en;q=0.8',
-            'Cookie: PREF=ID=c4c4285d83f832c6:U=6b262550f9a229a9:LD=en:TM=1362211581:LM=1372870960:GM=1:S=5OrGGZoI240JxD81; GDSESS=ID=654c1603fd6559fc:TM=1377751668:C=c:IP=89.146.104.222-:S=APGng0vWlPd3y-yKhu6ECr__DzsVlGN65w; NID=67=N9OYt-VNFigTFEyfX1OK3LIsOv423FxWSzmGWgMidsMXAK1cbyg3fR5x73LV1DNDnKdseL-iYEj3wb8oJIiMEaKV4TtX_kI5X7CYKIDkLhxIIGHElFJlypABDiFYul9LH6zXbxa9bQOpIfgTbGQvy5P4DJ2OGqwFRGbBdaY-ZSJeWbI7DyynS3Y; HSID=A8NAgJAqw9agGdNgq; APISID=P7iJ5FUlsWSzCn-j/Ais20q3wjKf8zOQZp; SID=DQAAANsAAACQDqoEc77cEmB2RM-prpC-Ahle5iWiANIYa33ilxFRESyIET9scvvH5bed6EIfhetHC4XlLL40DI21NHliafVvn6kSdcIOZbeUJ69xSX8P2zeahKTaSYieD6Or7Ac4WCSJWHyvtGiQ91QyaR4q7YkoXfKGBl9MZt2Qcy11GBto6irsehN8cdR2sCTp5lu8FdXNJEiXxxAIcroaihxjco8AuhaiTe8PvXSfJbmqUore2McG-H09n9K6ncPV8hjlSOVgwORRbQ6vf7lfMJe3PctC9zhu62jp8Igo2GTaR_iUrQ',
-            'Referer: http://www.google.com/',
-            'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.17 (KHTML, like Gecko) Ubuntu Chromium/24.0.1312.56 Chrome/24.0.1312.56 Safari/537.17',
-            'X-Chrome-Variations: CMK1yQEIl7bJAQiYtskBCKS2yQEIp7bJAQi7tskBCNyDygE=',
-        ),
-        array(
-            'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'Accept-Encoding: gzip, deflate',
-            'Accept-Language: en-US,en;q=0.5',
-            'Connection: keep-alive',
-            'Cookie: PREF=ID=2223fc803701a9c6:U=24c29306041da552:FF=0:LD=en:TM=1377712906:LM=1377756813:S=-bg4rPBcsIYnqFwb; NID=67=TAptg1VW9zkoIqenMaigDxN7RAl2NWdgQFPUHxqBS_3-dJIFtLkl_DOlphX8ikg4vbhOlKTMc4F86i52JQi2SmLMYJ9gZbvYblIkH2u0vQR7e6V03aC5tOAQlZZgjg8SH1pyrPrRsZf-FmlmNok8BEDyKeVAub_lO6-RSd1upyUWQCZAqBor6Q; GDSESS=ID=3e7edde6fc2c5d97:TM=1377756364:C=c:IP=89.146.104.222-:S=APGng0uNd8HFNSzn3T7izFbTg0g45grD-Q; S=account-recovery=P6iTi2aVDV8; SID=DQAAAKEAAADDlI_nT6Pn8XSKSxcYS_D7OjDQNdho8TPcm4CXi9B7mA9MZBoNORMpfqYyxmKTFwZBL-NcVvXGhTzT-O8ko6gEd3p64c-zG2A5Z7MGvk6fkHj5sDET9sgdMWWfYMHt32aiSApdok9n_Zmt62svHD58PwFAiIN32iYzqgU1p119g8ETVZea2FTBkc_0hYq-es71jfKrDrhe77a8vhY7oJWBs89TJW1piAdojr4zxYKf2A; HSID=ABgQ7jla8pdG-otZ3; SSID=A3gfWDyewNsL2qrua; APISID=52PlNameB0WwQqeZ/AbQBA0dtpwjRiPsep; SAPISID=xv4LTnf32FqsyHCo/AThi9jieKSyVSG3is',
-            'Host: www.google.com',
-            'Referer: https://www.google.com/search?biw=1366&bih=342&noj=1&sclient=psy-ab&q=PHP6&oq=PHP6&gs_l=serp.3...0.0.1.9088.0.0.0.0.0.0.0.0..0.0....0...1c..26.serp..0.0.0.cHxCzMBwQ7M',
-            'User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:19.0) Gecko/20100101 Firefox/19.0',
-        ),
-        array(
-            'User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:19.0) Gecko/20100101 Firefox/19.0',
-            'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'Accept-Language: en-US,en;q=0.5',
-            'Accept-Encoding: deflate',
-            'Host: www.google.com',
-            //'Pragma: no-cache',
-//'Cache-Control: no-cache',
-            'Referer: https://www.google.com/'
-        ),
-    );
+    protected static $cuse = array();
+    protected static $cook = array();
+    protected static $marker = 0;
+    protected static $client = array();
 
     public function __construct($text = '') {
         $this->buf = $text;
+        if (empty(self::$client))
+            self::$client = include(Yii::app()->basePath . '/config/agent.php');
     }
 
     public function get() {
@@ -131,20 +104,58 @@ class StringParser {
         return $cont;
     }
 
+    protected function startGoogle() {
+        $url = 'https://www.google.com';
+        self::$cook[self::$marker] = array();
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, self::$client[self::$marker]);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_VERBOSE, 0);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+
+        $response = curl_exec($ch);
+        $size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+        curl_close($ch);
+
+        $header = substr($response, 0, $size);
+        $r = explode("\n", $header);
+        foreach ($r as $h) {
+            if (!empty($h) && strpos($h, 'Set-Cookie: ') !== false) {
+                $cook = explode(';', substr($h, 12));
+                self::$cook[self::$marker][] = $cook[0];
+            }
+        }
+    }
+
     public function grab($url, $client = 0) {
+        if (self::$marker == count(self::$client))
+            self::$marker = 0;
+
+        if (isset(self::$cuse[self::$marker]) && self::$cuse[self::$marker] == 100)
+            self::$cuse[self::$marker] = 0;
+        if (empty(self::$cuse[self::$marker])) {
+            self::$cuse[self::$marker] = 0;
+            //$this->startGoogle();
+        }
+        
+        $c = self::$client[self::$marker];
+        //if(!empty(self::$cook[self::$marker]))
+        //    $c[] = 'Cookie: SSID=A3MdpZI9tlmWz0_Qy;SID=DQAAAK8AAAAzz6eSyFIhrcUP63XAqoSajRi-dZjUKd0LUOUVB8LPb_M7C1ejQSIrJ8ApSlpIQyEOoMswbKN8hEMkxV0s9M1G6dGR7sDpkh9drtQXhm5uImIIwtbi3xrMbscuPTIg5_8YJoyWhfY81vsgbQ0KJP1kMzZ9QYZaIPufKHiEg_VfdFqXRHbhOd33xD2yT1Gk5zWQVkVB-fxvEcz4H3uUwXLGHXIjQji4MXdknQ3x6k-Wbg;SAPISID=GpFm3wj_SQf3yY2Q/A5L2IbG16uqa_j7-a;S=gmail=pvBKq931kEj6kTrlQn0y4A;PREF=ID=098d336001b3ca59:U=ca6989646731181f:FF=0:LD=en:TM=1377801402:LM=1377804211:GM=1:S=Vf7XtfcylB3QFHcs;NID=67=qjxxx1vpwHEUa7aAeKJxGxA8KzM48cZTuzmWOaJukg8eWRbc7QRKAvC-Eo-2_gPglH79TcwLnAo51W56nDr70v4z94TRshhEqY6PWu1N-ZbxI0WYP3O5Htolf0Dw472wy5QNG9t63ZDqnlikHDQPS7mgzP4wiaUY3w;HSID=AjxSv3yWdUJHaQ9qh;GX=DQAAALIAAABUn8T5XEnZBoJTCL58AHXlX15TRsxJ-jX8avM8n9YQgCX4ywe-TDbHOXTbegYXy27wrWjbibPmcdd0iYG9NJoyP5zpNipcxOWjGiPV_j7uG85OaIP7lae9DvZYOhbLnHxOlP3b2FamaJwaQeboSDHLdZbA6IKbQ4vmbd360H51Ohg6-YEkXAv0c99TLb1g33I7yUKre-NN4_fU1hc_Nww4lieheLioq46ZuuM4BJodvV_Kol6cSNfpAQjIIElbmpw;GMAIL_AT=AF6bupPLtgRBOhlrExt69DEA-_V69Om8Og;GDSESS=ID=d4034c6b5ec63dae:TM=1377803891:C=c:IP=89.146.104.222-:S=APGng0tUo_t1hs5Xzyib3mhzyTKK32GX-A;BEAT=APfa0box2pG2TqrC6nh_Vdz1S2gAd31VMJGAOJrMfZBE2t52eruPx4AECo5mOBs5UjbByOY9KWtk;APISID=83j6lAiIjgj7YP8J/A9XueEH5tvFub4dnS;N_T=sess%3D55caa75ca279f155%26v%3D2%26c%3D6cb9996c%26s%3D521f9fba%26t%3DD%3A0%3A%7Cm%3A0%3A%26sessref%3Dhttps%253A%252F%252Fmail.google.com%252F_%252Fmail-static%252F_%252Fjs%252Fmain%252Fm_i%252Ct%252Cit%252Frt%253Dh%252Fver%253DW6qHKDTagR4.en.%252Fsv%253D1%252Fam%253D%2521v74bplXLnk_0RcHS2-1dRapnn_X8l5tcaS9vZGhkBaN1OGHV4JAdzoAcXpTBQrFvzIwkrfWktw%252Fd%253D1;';
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, self::$client[$client]);
-// $cook = 'PREF=ID=2223fc803701a9c6:U=24c29306041da552:FF=0:TM=1377712906:LM=1377719573:S=wZCm8AdfruxYZcOJ; NID=67=MSofsRpvzu38-1-WOMxZKT2ukoUceE21SLdzNhuKd1bTrxFG-SvO413Zx-7OD0InhLNGCkmKMDWXPDRL8ATM8o6JqJzGidvpGwhTgOIlAwboKxbDmrRNya6fSEaQj-xl; GDSESS=ID=2f3327048613e1ee:TM=1377719528:C=c:IP=89.146.104.222-:S=APGng0vARGksmDDSsiN9IA_ea6YrEPjF5w';
-//curl_setopt($ch, CURLOPT_COOKIE, $cook);
-
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $c);
 
         $response = curl_exec($ch);
         $response = $this->compatible_gzinflate($response);
-        file_put_contents('1.txt', $response);
+        file_put_contents(self::$marker.'.txt', $response);
         curl_close($ch);
+        self::$cuse[self::$marker]++;
+        self::$marker++;
         return $response;
     }
 
