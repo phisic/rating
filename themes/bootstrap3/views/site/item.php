@@ -1,7 +1,12 @@
 <h1><?=$i['Keyword']?></h1>
-<img src="/rt/p<?=$i['Id']?>-500x500.jpg">
+<img alt="<?=$i['Keyword']?>" src="/rt/p<?=$i['Id']?>-300x300.jpg">
 <?php
-foreach ($r as $rating){
-    echo '<a href="">'.$rating['Name'].'</a> ';
+foreach ($ratings as $rating){
+    echo '#'.$rating['Position'].' in <a href="">'.$rating['Name'].'</a><br/> ';
 }
+
+foreach ($text as $t){
+    echo '<div><div>'.$t['Content'].'</div>Source: <noindex><a rel="nofollow" href="'.$t['SourceUrl'].'">'.$t['Source'].'</a></noindex></div>';
+}
+
 ?>

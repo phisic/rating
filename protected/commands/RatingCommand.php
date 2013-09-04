@@ -111,6 +111,15 @@ class RatingCommand extends CConsoleCommand {
                 $r = Yii::app()->db->getCommandBuilder()->createUpdateCommand('rating2item', array('Rank' => $rank, 'RankDate' => $date, 'RankDelta' => $delta), $c2)->execute();
             }
         } while ($r);
+        
+        $this->actionPosition();
+    }
+    
+    public function actionPosition(){
+        foreach (Yii::app()->db->getCommandBuilder()->createFindCommand('rating', new CDbCriteria())->queryAll() as $r){
+            Yii::app()->db->getCommandBuilder()->createSqlCommand('set @rownum := 0;')->execute();
+            Yii::app()->db->getCommandBuilder()->createSqlCommand('update rating2item ri set ri.Position = (SELECT @rownum := @rownum + 1) where  ri.RatingId='.$r['Id'].' order by ri.Rank desc;')->execute();
+        }
     }
 
     public function actionAol() {

@@ -48,9 +48,17 @@ class SiteController extends Controller {
         $c2 = new CDbCriteria();
         $c2->join = 'JOIN rating r ON r.Id = t.RatingId';
         $c2->addColumnCondition(array('ItemId'=>$i['Id']));
-        $c2->select = 'Name,RatingId';
+        $c2->select = 'Name,RatingId,Position';
         $r = Yii::app()->db->getCommandBuilder()->createFindCommand('rating2item', $c2)->queryAll();
-        $this->render('item', array('i' => $i, 'r'=>$r));
+        
+        $c3 = new CDbCriteria();
+        $c3->select = 'Source,SourceUrl, substr(Content,1,4000) as Content';
+        $c3->addColumnCondition(array('ItemId'=>$i['Id']));
+        $text = Yii::app()->db->getCommandBuilder()->createFindCommand('item_text', $c3)->queryAll();
+        if($rating = (int)Yii::app()->request->getParam('rating',0)){
+            
+        }
+        $this->render('item', array('i' => $i, 'ratings'=>$r, 'text'=>$text));
     }
 
     /**
