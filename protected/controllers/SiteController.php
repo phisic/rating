@@ -44,7 +44,13 @@ class SiteController extends Controller {
         } else {
             throw new CHttpException(404);
         }
-        echo 'hello~';
+        
+        $c2 = new CDbCriteria();
+        $c2->join = 'JOIN rating r ON r.Id = t.RatingId';
+        $c2->addColumnCondition(array('ItemId'=>$i['Id']));
+        $c2->select = 'Name,RatingId';
+        $r = Yii::app()->db->getCommandBuilder()->createFindCommand('rating2item', $c2)->queryAll();
+        $this->render('item', array('i' => $i, 'r'=>$r));
     }
 
     /**

@@ -93,30 +93,18 @@ class RatingCommand extends CConsoleCommand {
         do {
             $r = Yii::app()->db->getCommandBuilder()->createFindCommand('rating', $c)->queryAll();
             foreach ($r as $row) {
-
-                $keyword = ($row['Context'] ? '"' . urlencode($row['Context']) . '"' . '+' : '') . '"' . urlencode($row['Keyword']) . '"';
-
-                if (empty($pq))
-                    $pq = $keyword;
-
-                $url = 'http://www.bing.com/search?q=' . $keyword . '&qs=n&form=QBRE&pq=' . strtolower($keyword) . '&sc=8-15&sp=-1&sk=';
-                echo $keyword . "\n";
-                $pq = $keyword;
-
+                $delta = 0;
+                $keyword = ($row['Context'] ? '"' . urlencode($row['Context']) . '"' . 'AND' : '') . '"' . urlencode($row['Keyword']) . '"';
+                $rank = file_get_contents('http://cellphonetop7.com/t.php?q=' . $keyword);
+                
+                echo $keyword.' = '.$rank . "\n";
                 $c2 = new CDbCriteria();
                 $c2->addColumnCondition(array('ItemId' => $row['ItemId'], 'RatingId' => $row['RatingId']));
-                $p = new StringParser($px->grab($url, $client));
-                $rank = $p->between('<span class="sb_count" id="count">', ' results');
                 if (empty($rank)) {
-                    $delta = 0;
                     if (empty($row['Rank']))
                         Yii::app()->db->getCommandBuilder()->createUpdateCommand('rating2item', array('Rank' => $rank, 'RankDate' => $date, 'RankDelta' => $delta), $c2)->execute();
                     continue;
                 }
-                $rank = $rank->remove(',')->get();
-                echo $rank . "\n";
-
-
                 if (!is_null($row['Rank']))
                     $delta = $rank - $row['Rank'];
 
@@ -203,9 +191,9 @@ class RatingCommand extends CConsoleCommand {
                 $rank = $p->between('Яндекс: нашлось ', ' ответ');
                 if (empty($rank))
                     $rank = $p->between('Яндекс: нашлась ', ' ответ');
-                if(empty($rank))
+                if (empty($rank))
                     $rank = $p->between('Яндекс: нашёлся ', ' ответ');
-                
+
                 if (empty($rank)) {
                     $delta = 0;
                     if (empty($row['Rank']))
@@ -214,8 +202,8 @@ class RatingCommand extends CConsoleCommand {
                     continue;
                 }
                 $ra = explode(' ', $rank->get());
-                
-                if (count($ra)==1 && isset($ra[0]) && is_numeric($ra[0])) {
+
+                if (count($ra) == 1 && isset($ra[0]) && is_numeric($ra[0])) {
                     $rank = $ra[0];
                 } else {
                     switch ($ra[1]) {
