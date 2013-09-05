@@ -48,7 +48,7 @@ class SiteController extends Controller {
         $c2 = new CDbCriteria();
         $c2->join = 'JOIN rating r ON r.Id = t.RatingId';
         $c2->addColumnCondition(array('ItemId'=>$i['Id']));
-        $c2->select = 'Name,RatingId,Position';
+        $c2->select = 'Name,RatingId,Position,Rank,RankDate, RankDelta';
         $r = Yii::app()->db->getCommandBuilder()->createFindCommand('rating2item', $c2)->queryAll();
         
         $c3 = new CDbCriteria();
