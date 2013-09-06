@@ -14,7 +14,7 @@
     require_once('protected/components/WebApplication.php');
     Yii::createApplication('WebApplication', $config);
     
-$width = array(200,201,300,500);
+$width = array(100,200,201,300,500);
 if (isset($_GET['id']) && isset($_GET['width']) && isset($_GET['height'])) {
     if(!in_array($_GET['width'], $width))
             exit;

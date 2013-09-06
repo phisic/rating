@@ -1,3 +1,7 @@
+body {
+    background: none repeat scroll 0 0 #F5F5F5;
+    font-size: 13px;
+}
 .top-search-form{
 	border: 0px;
 	margin: 0px;
@@ -26,4 +30,17 @@
 .rating .thumbnail{
     width:220px;
     margin-bottom: 10px;
+}
+.page-inner {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    clear: both;
+    overflow: hidden;
+}
+
+.page-unique {
+    border-radius: 6px 6px 6px 6px;
+    overflow: hidden;
+    padding-bottom: 40px;
 }

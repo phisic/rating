@@ -4,7 +4,7 @@
     <th>#</th>
     <th>Image</th>
     <th>Name</th>
-    <th>Web score</th>
+    <th>Web Rank</th>
     <th>Updated</th>
 </tr>
     <?php foreach ($items as $n=>$i) {?>
@@ -12,9 +12,9 @@
             <td>
                 <?=($n+1+$pager->offset)?>
             </td>
-            <td><img class="img-thumbnail" src="/rt/p<?=$i['Id'].'-200x200.jpg'?>"></td>
+            <td><a href="<?=Yii::app()->seoUrl('', $i['Keyword']);?>"><img alt="<?=$i['Keyword']?>" class="img-thumbnail" src="/rt/p<?=$i['Id'].'-200x200.jpg'?>"></a></td>
             <td>
-                    <strong><?=$i['Keyword']?></strong>
+                    <a href="<?=Yii::app()->seoUrl('', $i['Keyword']);?>"><strong><?=$i['Keyword']?></strong></a>
                     <div><?=isset($i['Description'])?$i['Description']:''?></td>
             </td>
             <td><strong><?=$i['Rank']?></strong>
