@@ -23,7 +23,7 @@
             <td><a href="<?=Yii::app()->seoUrl('', $i['Keyword'].'-'.$rating['Id']);?>"><img alt="<?=$i['Keyword']?>" class="img-thumbnail" src="/rt/p<?=$i['Id'].'-200x200.jpg'?>"></a></td>
             <td>
                     <a href="<?=Yii::app()->seoUrl('', $i['Keyword'].'-'.$rating['Id']);?>"><strong><?=$i['Keyword']?></strong></a>
-                    <div><?=isset($i['Description'])?$i['Description']:''?></td>
+                    <div class="hidden-xs"><?=isset($i['Description'])?$i['Description']:''?></div></td>
             </td>
             <td><strong><?=Yii::app()->rank($i['Rank'])?></strong>
                 <?php if($i['RankDelta']==0){}?>

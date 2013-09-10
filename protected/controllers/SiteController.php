@@ -56,6 +56,7 @@ class SiteController extends Controller {
                 $i['Position'] = $r['Position'];
                 $i['RatingName'] = $r['Name'];
                 $i['Category'] = Yii::app()->helper->categories[$r['CategoryId']]['Name'];
+                Yii::app()->helper->activeCategory = $r['CategoryId'];
                 $this->pageTitle = $i['Keyword'].' in '.$r['Name'];
             }
             $ratings[] = $r;

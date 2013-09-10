@@ -13,6 +13,7 @@ class CategoryController extends Controller {
         }  else {
             $categoryId = 0;
         }
+        Yii::app()->helper->activeCategory = $categoryId;
         $count = Yii::app()->helper->getRatingCount($categoryId);
         $pager = new CPagination($count);
         $pager->pageSize = 40;

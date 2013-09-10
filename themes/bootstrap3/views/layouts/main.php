@@ -31,30 +31,32 @@
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="Search">
                             </div>
-                            <button type="submit" class="btn btn-default">Submit</button>
+                            <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
                         </form>
-                        <a class="navbar-brand" href="/"><span class="text-info">Open</span><span class="text-success">Web</span><span class="text-danger">Rating</span></a>
+                        <a class="navbar-brand hidden-xs" href="/"><span class="text-info">Open</span><span class="text-success">Web</span><span class="text-danger">Rating</span></a>
+                        <a class="navbar-brand visible-xs" style="padding-left:5px;padding-right:0px;" href="/"><span class="text-info">Open</span><span class="text-success">Web</span><span class="text-danger">Rating</span></a>
                     </div>
 
-                    <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-ex1-collapse">
                         <?= Yii::app()->helper->mainMenu(); ?>
-                        <form class="navbar-form navbar-left hidden-xs" role="search">
+                        <form class="navbar-form navbar-right hidden-md hidden-sm" role="search">
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="Search">
                             </div>
                             <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
                         </form>
-                        <ul class="nav navbar-nav navbar-right">
-                            <!--li><a href="#">Login</a></li>
-                                <li><a href="#">Register</a></li-->
-                            <li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span><b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Login</a></li>
-                                    <li><a href="#">Register</a></li>
-                                </ul>
-                            </li>
-                        </ul>
+                        <?
+//                        <ul class="nav navbar-nav navbar-right">
+//                            <!--li><a href="#">Login</a></li>
+//                                <li><a href="#">Register</a></li-->
+//                            <li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span><b class="caret"></b></a>
+//                                <ul class="dropdown-menu">
+//                                    <li><a href="#">Login</a></li>
+//                                    <li><a href="#">Register</a></li>
+//                                </ul>
+//                            </li>
+//                        </ul>
+                       ?>
                     </div><!-- /.navbar-collapse -->
                 </div>
             </nav>
