@@ -50,8 +50,11 @@ function imageResize($image, $thumb_width, $new_filename) {
         trigger_error("GD is not loaded", E_USER_WARNING);
         return false;
     }
+    
     //Get Image size info
     list($width_orig, $height_orig, $image_type) = getimagesize($image);
+    if($width_orig < $thumb_width)
+        $thumb_width = $width_orig;
     switch ($image_type) {
         case 1:
             $im = imagecreatefromgif($image);

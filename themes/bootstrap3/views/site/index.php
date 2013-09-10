@@ -1,3 +1,4 @@
+<div class="container" style="padding-top:15px;">
 <div class="well">Do you know what is most popular on world wide web?
     Be in touch about everything growing popularity.
     Everything published here is open and it means you can create your own popularity ratings, add missing items into existing ratings and share them with others.
@@ -28,14 +29,14 @@
                         <div class="col-lg-8 padding_left0">
                             <div>
                                 <span class="label label-info">#<?= $n ?></span>
-                                <strong><a href="<?= Yii::app()->seoUrl('', $i['Keyword']); ?>"><?= $i['Keyword'] ?></a></strong>
+                                <strong><a href="<?= Yii::app()->seoUrl('', $i['Keyword'].'-'.$i['RatingId']); ?>"><?= $i['Keyword'] ?></a></strong>
                             </div>
-                            <div>Web Rank: <strong><?= round($i['Rank']) ?>K</strong> </div>
+                            <div>Web Rank: <strong><?= Yii::app()->rank($i['Rank']) ?></strong> </div>
                             <div>        
                                 <?php if ($i['RankDelta'] > 0) { ?>
-                                    <span class="label label-success">+<?= $i['RankDelta'] ?></span>
+                                    <span class="label label-success">+<?= Yii::app()->rank($i['RankDelta']) ?></span>
                                 <?php } elseif ($i['RankDelta'] < 0) { ?>
-                                    <span class="label label-danger"><?= $i['RankDelta'] ?></span>
+                                    <span class="label label-danger"><?= Yii::app()->rank($i['RankDelta']) ?></span>
                             <?php } ?>
                             </div>
         <?php if (isset($i['Description'])) { ?> <?= $i['Description'] ?>  <?php } ?>
@@ -58,10 +59,10 @@
                             <div class="col-lg-8 padding_left0">
                                 <div>
                                     <span class="label label-info">#<?= $n ?></span>
-                                    <strong><a href="<?= Yii::app()->seoUrl('', $i['Keyword']); ?>"><?= $i['Keyword'] ?></a></strong>
+                                    <strong><a href="<?= Yii::app()->seoUrl('', $i['Keyword'].'-'.$i['RatingId']); ?>"><?= $i['Keyword'] ?></a></strong>
                                 </div>
-                                <div>Web Rank: <strong><?= round($i['Rank']) ?>K</strong></div>
-                                <div><span class="label label-success">+<?= $i['RankDelta'] ?></span></div>
+                                <div>Web Rank: <strong><?= Yii::app()->rank($i['Rank']) ?></strong></div>
+                                <div><span class="label label-success">+<?= Yii::app()->rank($i['RankDelta']) ?></span></div>
             <?php if (isset($i['Description'])) { ?> <?= $i['Description'] ?>  <?php } ?>
                             </div>
                         </div> 
@@ -83,10 +84,10 @@
                             <div class="col-lg-8 padding_left0">
                                 <div>
                                     <span class="label label-info">#<?= $n ?></span>
-                                    <strong><a href="<?= Yii::app()->seoUrl('', $i['Keyword']); ?>"><?= $i['Keyword'] ?></a></strong>
+                                    <strong><a href="<?= Yii::app()->seoUrl('', $i['Keyword'].'-'.$i['RatingId']); ?>"><?= $i['Keyword'] ?></a></strong>
                                 </div>
-                                <div>Web Rank: <strong><?= round($i['Rank']) ?>K</strong> </div>
-                                <div><span class="label label-danger"><?= $i['RankDelta'] ?></span></div>
+                                <div>Web Rank: <strong><?= Yii::app()->rank($i['Rank']) ?></strong> </div>
+                                <div><span class="label label-danger"><?= Yii::app()->rank($i['RankDelta']) ?></span></div>
             <?php if (isset($i['Description'])) { ?> <?= $i['Description'] ?>  <?php } ?>
                             </div>
                         </div> 
@@ -101,3 +102,4 @@
 <?php } ?>
 </table>
 <?php $this->widget('CLinkPager', array('htmlOptions' => array('class' => 'pager'), 'pages' => $pager)); ?>
+</div>

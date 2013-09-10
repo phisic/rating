@@ -86,12 +86,6 @@ return array(
 				),
 			),
 		),
-            'authManager'=>array(
-                //'class'=>'CDbAuthManager',
-		//'connectionID'=>'db',
-		'class'=>'PhpAuthManager',
-		'defaultRoles'=>array('guest'),
-            ),
 	),
 
 	// application-level parameters that can be accessed

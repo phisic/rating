@@ -95,7 +95,8 @@ class RatingCommand extends CConsoleCommand {
             foreach ($r as $row) {
                 $delta = 0;
                 $keyword = ($row['Context'] ? '"' . urlencode($row['Context']) . '"' . 'AND' : '') . '"' . urlencode($row['Keyword']) . '"';
-                $rank = file_get_contents('http://cellphonetop7.com/t.php?q=' . $keyword);
+                //$rank = file_get_contents('http://cellphonetop7.com/t.php?q=' . $keyword);
+                $rank = file_get_contents('http://rating/t.php?q=' . $keyword);
                 
                 echo $keyword.' = '.$rank . "\n";
                 $c2 = new CDbCriteria();
@@ -116,6 +117,7 @@ class RatingCommand extends CConsoleCommand {
     }
     
     public function actionPosition(){
+        Yii::app()->db->getCommandBuilder()->createSqlCommand('update rating r set weight= (select max(rank) from rating2item ri join item i on ri.itemid=i.id where ri.ratingid=r.id) limit 1000000')->execute();
         foreach (Yii::app()->db->getCommandBuilder()->createFindCommand('rating', new CDbCriteria())->queryAll() as $r){
             Yii::app()->db->getCommandBuilder()->createSqlCommand('set @rownum := 0;')->execute();
             Yii::app()->db->getCommandBuilder()->createSqlCommand('update rating2item ri set ri.Position = (SELECT @rownum := @rownum + 1) where  ri.RatingId='.$r['Id'].' order by ri.Rank desc;')->execute();

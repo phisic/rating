@@ -11,6 +11,9 @@ class RatingController extends Controller {
             $this->pageTitle = $rating['Name'];
             $Id = $rating['Id'];
         }
+        if(empty($rating))
+            throw new CHttpException(404);
+        $rating['Category'] = Yii::app()->helper->categories[$rating['CategoryId']]['Name'];
         $count = Yii::app()->helper->getItemCount($Id);
         $pager = new CPagination($count);
         $pager->pageSize = 50;
@@ -20,9 +23,4 @@ class RatingController extends Controller {
         $items = Yii::app()->helper->getItems($Id, $c2);
         $this->render('index', array('items' => $items,'rating'=>$rating, 'pager' => $pager));
     }
-    
-    public function actionItem($rating, $item){
-        
-    }
-
 }

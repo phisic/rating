@@ -34,7 +34,7 @@ class SiteController extends Controller {
         $this->render('index', array('list' => $list, 'pager' => $pager));
     }
 
-    public function actionItem($keyword) {
+    public function actionItem($keyword, $rating=0) {
         $name = Yii::app()->decodeSeoUrl($keyword);
         $c = new CDbCriteria();
         $c->addColumnCondition(array('Keyword' => $name));
@@ -48,17 +48,44 @@ class SiteController extends Controller {
         $c2 = new CDbCriteria();
         $c2->join = 'JOIN rating r ON r.Id = t.RatingId';
         $c2->addColumnCondition(array('ItemId'=>$i['Id']));
-        $c2->select = 'Name,RatingId,Position,Rank,RankDate, RankDelta';
-        $r = Yii::app()->db->getCommandBuilder()->createFindCommand('rating2item', $c2)->queryAll();
-        
+        $c2->select = 'Name,RatingId,Position,Rank,RankDate, RankDelta,CategoryId';
+        $ratings = array();
+        foreach (Yii::app()->db->getCommandBuilder()->createFindCommand('rating2item', $c2)->queryAll() as $r){
+            if($r['RatingId']==$rating){
+                $i['RatingId'] = $rating; 
+                $i['Position'] = $r['Position'];
+                $i['RatingName'] = $r['Name'];
+                $i['Category'] = Yii::app()->helper->categories[$r['CategoryId']]['Name'];
+                $this->pageTitle = $i['Keyword'].' in '.$r['Name'];
+            }
+            $ratings[] = $r;
+        }
+        if(empty($ratings))
+            throw new CHttpException(404);
         $c3 = new CDbCriteria();
-        $c3->select = 'Source,SourceUrl, substr(Content,1,4000) as Content';
+        $c3->select = 'Source,SourceUrl, substr(Content,1,2000) as Content';
         $c3->addColumnCondition(array('ItemId'=>$i['Id']));
         $text = Yii::app()->db->getCommandBuilder()->createFindCommand('item_text', $c3)->queryAll();
-        if($rating = (int)Yii::app()->request->getParam('rating',0)){
-            
+        $similarRight = $similarLeft = array();
+        if($rating){
+            $c5 = new CDbCriteria();
+            $c5->join = 'JOIN item i on i.Id = t.ItemId';
+            $c5->select = 'i.Keyword,t.Position,t.RatingId';
+            $c5->condition = 't.Position < '.$i['Position']  .' and RatingId='.$rating;
+            $c5->order = 't.Position DESC';
+            $c5->limit = 5;
+            $similarLeft = Yii::app()->db->getCommandBuilder()->createFindCommand('rating2item', $c5)->queryAll();
+            $similarLeft = array_reverse($similarLeft);
+            $c4 = new CDbCriteria();
+            $c4->join = 'JOIN item i on i.Id = t.ItemId';
+            $c4->select = 'i.Keyword,t.Position,t.RatingId';
+            $c4->condition = 't.Position > '.$i['Position'] .' and RatingId='.$rating;
+            $c4->order = 't.Position ASC';
+            $c4->limit = 10-count($similarLeft);
+            $similarRight = Yii::app()->db->getCommandBuilder()->createFindCommand('rating2item', $c4)->queryAll();
         }
-        $this->render('item', array('i' => $i, 'ratings'=>$r, 'text'=>$text));
+        
+        $this->render('item', array('i' => $i, 'ratings'=>$ratings, 'text'=>$text, 'left'=>$similarLeft, 'right'=>$similarRight));
     }
 
     /**
