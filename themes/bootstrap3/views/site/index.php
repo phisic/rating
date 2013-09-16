@@ -1,8 +1,11 @@
 <div class="container" style="padding-top:15px;">
-<div class="well">Do you know what is most popular on world wide web?
-    Be in touch about everything growing popularity.
-    Everything published here is open and it means you can create your own popularity ratings, add missing items into existing ratings and share them with others.
-    We build ratings for most popular on the web and we happy if you join to us.
+<div class="well">
+    Presented ratings are not based on the decisions of any experts and professionals. 
+    The rating is based on naturally on the opinions of all Internet users including you and me.
+    That's why we named it open web rating. 
+    Popularity is determined by a simple parameter we named it <b>"Web Rank"</b>. 
+    "Web Rank" - reflects how the theme is popular on the Internet. 
+    There is simple rule, the more people talk about certain theme in their comments, articles and reviews and it results higher web rank for this theme.
 </div>
 <table width="100%">
     <?php

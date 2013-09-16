@@ -21,6 +21,9 @@ class WebApplication extends CWebApplication {
     }
 
     function rank($n, $precision = 2) {
+        $n = $n/1E3;
+        $sign = $n<0 ? '-' : '';
+        $n = abs($n);
         if ($n < 1000) {
             // Anything less than a million
             $n_format = number_format($n);
@@ -35,9 +38,9 @@ class WebApplication extends CWebApplication {
         }
         $ex = explode('.',$n_format);
         if(isset($ex[1]) && substr($ex[1], 0, 2) == '00')
-            return $ex[0].substr($ex[1], 2, 1);
+            return $sign . $ex[0].substr($ex[1], 2, 1);
             
-        return $n_format;
+        return $sign.$n_format;
     }
 
 }

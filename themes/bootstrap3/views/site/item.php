@@ -5,12 +5,15 @@
     <li><a href="<?= Yii::app()->seoUrl('rating', $i['RatingName']) ?>"><?= $i['RatingName'] ?></a></li>
 </ul>
 <div class="container">
-    <div class="row">
+    <div class="row" style="padding-right: 10px;">
         <div class="col-md-4"><img class="img-thumbnail" alt="<?= $i['Keyword'] ?>" src="/rt/p<?= $i['Id'] ?>-300x300.jpg"></div>
-        <div class="col-md-8" style="font-size:16px;">
+        <div class="col-md-8" style="font-size:18px; margin-top: 10px;">
+            <div class="img-thumbnail" style="width:100%;">
+            <h3><?=$i['Keyword']?> is participating in the following ratings</h3>
             <?php
             foreach ($ratings as $rating) {
-                echo '<div style="font-size:20px;"><strong style="font-size:25px;">#' . $rating['Position'] . '</strong> in <a href="' . Yii::app()->seoUrl('rating', $rating['Name']) . '">' . $rating['Name'] . '</a></div>';
+                echo '<div class="col-sm-6 col-md-6">';
+                echo '<div><strong>#' . $rating['Position'] . '</strong> in <a href="' . Yii::app()->seoUrl('rating', $rating['Name']) . '">' . $rating['Name'] . '</a></div>';
 
                 echo '<div><i class="glyphicon glyphicon-signal"></i> Web Rank: <strong>' . Yii::app()->rank($rating['Rank']) . '</strong></div>';
                 if ($rating['RankDelta'] == 0) {
@@ -25,8 +28,10 @@
                 }
                 echo '<div><i class="' . $picon . '"></i> Popularity is ' . $popularity . '</div>';
                 echo '<div><i class="glyphicon glyphicon-calendar"></i> Last updated on ' . date('F j, Y', strtotime($rating['RankDate'])) . '</div><br>';
+                echo '</div>';
             }
             ?>
+            </div>
         </div>
     </div>
 </div>
@@ -43,10 +48,10 @@
 </ul>
 <?php if ($text) { ?>
     <div class="container">
-        <h3>Useful descriptions</h3>
+        <h3>Useful information</h3>
         <?php
         foreach ($text as $t) {
-            echo '<div class="container"><div>' . strip_tags($t['Content'], '<p>,<b>,<i>') . '</div>Source: <noindex><a rel="nofollow" href="' . $t['SourceUrl'] . '">' . $t['Source'] . '</a></noindex></div>';
+            echo '<div class="container well"><div>' . strip_tags($t['Content'], '<p>,<b>,<i>') . '</div><p>Read more: <noindex><a target="_blank" rel="nofollow" href="' . Yii::app()->createUrl('site/external').'?id='.$t['Id'] . '">' . $t['Source'] . '</a></noindex></p></div>';
         }
         ?>
     </div>

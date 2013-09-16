@@ -34,7 +34,7 @@ class SiteController extends Controller {
         $this->render('index', array('list' => $list, 'pager' => $pager));
     }
 
-    public function actionItem($keyword, $rating=0) {
+    public function actionItem($keyword, $rating = 0) {
         $name = Yii::app()->decodeSeoUrl($keyword);
         $c = new CDbCriteria();
         $c->addColumnCondition(array('Keyword' => $name));
@@ -44,35 +44,35 @@ class SiteController extends Controller {
         } else {
             throw new CHttpException(404);
         }
-        
+
         $c2 = new CDbCriteria();
         $c2->join = 'JOIN rating r ON r.Id = t.RatingId';
-        $c2->addColumnCondition(array('ItemId'=>$i['Id']));
+        $c2->addColumnCondition(array('ItemId' => $i['Id']));
         $c2->select = 'Name,RatingId,Position,Rank,RankDate, RankDelta,CategoryId';
         $ratings = array();
-        foreach (Yii::app()->db->getCommandBuilder()->createFindCommand('rating2item', $c2)->queryAll() as $r){
-            if($r['RatingId']==$rating){
-                $i['RatingId'] = $rating; 
+        foreach (Yii::app()->db->getCommandBuilder()->createFindCommand('rating2item', $c2)->queryAll() as $r) {
+            if ($r['RatingId'] == $rating) {
+                $i['RatingId'] = $rating;
                 $i['Position'] = $r['Position'];
                 $i['RatingName'] = $r['Name'];
                 $i['Category'] = Yii::app()->helper->categories[$r['CategoryId']]['Name'];
                 Yii::app()->helper->activeCategory = $r['CategoryId'];
-                $this->pageTitle = $i['Keyword'].' in '.$r['Name'];
+                $this->pageTitle = $i['Keyword'] . ' in ' . $r['Name'];
             }
             $ratings[] = $r;
         }
-        if(empty($ratings))
+        if (empty($ratings))
             throw new CHttpException(404);
         $c3 = new CDbCriteria();
-        $c3->select = 'Source,SourceUrl, substr(Content,1,2000) as Content';
-        $c3->addColumnCondition(array('ItemId'=>$i['Id']));
+        $c3->select = 'Id,Source,SourceUrl, substr(Content,1,2000) as Content';
+        $c3->addColumnCondition(array('ItemId' => $i['Id']));
         $text = Yii::app()->db->getCommandBuilder()->createFindCommand('item_text', $c3)->queryAll();
         $similarRight = $similarLeft = array();
-        if($rating){
+        if ($rating) {
             $c5 = new CDbCriteria();
             $c5->join = 'JOIN item i on i.Id = t.ItemId';
             $c5->select = 'i.Keyword,t.Position,t.RatingId';
-            $c5->condition = 't.Position < '.$i['Position']  .' and RatingId='.$rating;
+            $c5->condition = 't.Position < ' . $i['Position'] . ' and RatingId=' . $rating;
             $c5->order = 't.Position DESC';
             $c5->limit = 5;
             $similarLeft = Yii::app()->db->getCommandBuilder()->createFindCommand('rating2item', $c5)->queryAll();
@@ -80,13 +80,24 @@ class SiteController extends Controller {
             $c4 = new CDbCriteria();
             $c4->join = 'JOIN item i on i.Id = t.ItemId';
             $c4->select = 'i.Keyword,t.Position,t.RatingId';
-            $c4->condition = 't.Position > '.$i['Position'] .' and RatingId='.$rating;
+            $c4->condition = 't.Position > ' . $i['Position'] . ' and RatingId=' . $rating;
             $c4->order = 't.Position ASC';
-            $c4->limit = 10-count($similarLeft);
+            $c4->limit = 10 - count($similarLeft);
             $similarRight = Yii::app()->db->getCommandBuilder()->createFindCommand('rating2item', $c4)->queryAll();
         }
-        
-        $this->render('item', array('i' => $i, 'ratings'=>$ratings, 'text'=>$text, 'left'=>$similarLeft, 'right'=>$similarRight));
+
+        $this->render('item', array('i' => $i, 'ratings' => $ratings, 'text' => $text, 'left' => $similarLeft, 'right' => $similarRight));
+    }
+
+    public function actionExternal() {
+        $p = (int) Yii::app()->request->getParam('id', 0);
+        if ($p) {
+            $c3 = new CDbCriteria();
+            $c3->select = 'SourceUrl';
+            $c3->addColumnCondition(array('Id' => $p));
+            $text = Yii::app()->db->getCommandBuilder()->createFindCommand('item_text', $c3)->queryRow();
+            Yii::app()->request->redirect($text['SourceUrl']);
+        }
     }
 
     /**

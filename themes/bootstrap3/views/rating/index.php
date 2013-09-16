@@ -12,7 +12,7 @@
     <th width="2%">#</th>
     <th width="20%">Image</th>
     <th width="55%">Name</th>
-    <th width="10%">Web Rank</th>
+    <th width="10%" class="text-center">Web Rank</th>
     <th width="13%">Date Updated</th>
 </tr>
     <?php foreach ($items as $n=>$i) {?>
@@ -25,7 +25,7 @@
                     <a href="<?=Yii::app()->seoUrl('', $i['Keyword'].'-'.$rating['Id']);?>"><strong><?=$i['Keyword']?></strong></a>
                     <div class="hidden-xs"><?=isset($i['Description'])?$i['Description']:''?></div></td>
             </td>
-            <td><strong><?=Yii::app()->rank($i['Rank'])?></strong>
+            <td class="text-center"><strong><?=Yii::app()->rank($i['Rank'])?></strong>
                 <?php if($i['RankDelta']==0){}?>
                 
                 <?php if($i['RankDelta']>0){?>
