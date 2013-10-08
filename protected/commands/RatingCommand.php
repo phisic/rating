@@ -81,9 +81,9 @@ class RatingCommand extends CConsoleCommand {
     }
 
     public function actionBing() {
-        $c = new CDbCriteria(array('select' => 'ri.ItemId,ri.RatingId,i.Keyword,ri.Rank,Context'));
+        $c = new CDbCriteria(array('select' => 'ri.ItemId,ri.RatingId,i.Key as Keyword,ri.Rank,Context'));
         $c->join = 'JOIN rating2item ri ON ri.RatingId = t.Id JOIN item i ON i.Id = ri.ItemId';
-        $c->addCondition('((RankDate < (now()-INTERVAL 12 HOUR)) OR (RankDate Is NULL))');
+        $c->addCondition('((RankDate < (now()-INTERVAL 22 HOUR)) OR (RankDate Is NULL))');
         $c->order = 'RankDate';
         $c->limit = 100;
         $px = new StringParser();
@@ -95,8 +95,8 @@ class RatingCommand extends CConsoleCommand {
             foreach ($r as $row) {
                 $delta = 0;
                 $keyword = ($row['Context'] ? '"' . urlencode($row['Context']) . '"' . 'AND' : '') . '"' . urlencode($row['Keyword']) . '"';
-                $rank = file_get_contents('http://cellphonetop7.com/t.php?q=' . $keyword);
-                //$rank = file_get_contents('http://rating/t.php?q=' . $keyword);
+                //$rank = file_get_contents('http://laptoptop7.com/t.php?q=' . $keyword);
+                $rank = file_get_contents('http://rating/t.php?q=' . $keyword);
                 
                 echo $keyword.' = '.$rank . "\n";
                 $c2 = new CDbCriteria();

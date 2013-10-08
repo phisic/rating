@@ -6,14 +6,11 @@
 </ul>
 <div class="container">
     <div class="row" style="padding-right: 10px;">
-        <div class="col-md-4"><img class="img-thumbnail" alt="<?= $i['Keyword'] ?>" src="/rt/p<?= $i['Id'] ?>-300x300.jpg"></div>
-        <div class="col-md-8" style="font-size:18px; margin-top: 10px;">
-            <div class="img-thumbnail" style="width:100%;">
-            <h3><?=$i['Keyword']?> is participating in the following ratings</h3>
+        <div class="col-md-3"><img class="img-thumbnail" alt="<?= $i['Keyword'] ?>" src="/rt/p<?= $i['Id'] ?>-300x300.jpg"></div>
+        <div class="col-md-4" style="font-size:18px; margin-top: 10px;">
             <?php
-            foreach ($ratings as $rating) {
-                echo '<div class="col-sm-6 col-md-6">';
-                echo '<div><strong>#' . $rating['Position'] . '</strong> in <a href="' . Yii::app()->seoUrl('rating', $rating['Name']) . '">' . $rating['Name'] . '</a></div>';
+                $rating = array_shift($ratings);
+                echo '<div><strong>#' . $rating['Position'] . '</strong> in <a href="' . Yii::app()->seoUrl('rating', $rating['Name']) . '">' . $rating['Name'] . '</a> rating</div>';
 
                 echo '<div><i class="glyphicon glyphicon-signal"></i> Web Rank: <strong>' . Yii::app()->rank($rating['Rank']) . '</strong></div>';
                 if ($rating['RankDelta'] == 0) {
@@ -28,11 +25,21 @@
                 }
                 echo '<div><i class="' . $picon . '"></i> Popularity is ' . $popularity . '</div>';
                 echo '<div><i class="glyphicon glyphicon-calendar"></i> Last updated on ' . date('F j, Y', strtotime($rating['RankDate'])) . '</div><br>';
-                echo '</div>';
-            }
             ?>
-            </div>
+            
         </div>
+        <?php if($ratings){?>
+        <div class="col-md-4" style="margin-top: 10px;">
+         <strong>Also, <?=$i['Keyword']?> is participating in the following ratings</strong>
+        <?php 
+            foreach ($ratings as $rating){
+                
+                echo '<div><strong>#' . $rating['Position'] . '</strong> in <a href="' . Yii::app()->seoUrl('rating', $rating['Name']) . '">' . $rating['Name'] . '</a></div>';
+                
+            }
+        ?>
+        </div>
+        <?php } ?>
     </div>
 </div>
 <br>

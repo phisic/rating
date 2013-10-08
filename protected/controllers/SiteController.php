@@ -49,6 +49,7 @@ class SiteController extends Controller {
         $c2->join = 'JOIN rating r ON r.Id = t.RatingId';
         $c2->addColumnCondition(array('ItemId' => $i['Id']));
         $c2->select = 'Name,RatingId,Position,Rank,RankDate, RankDelta,CategoryId';
+        $c2->order = '(RatingId='.$rating.') DESC';
         $ratings = array();
         foreach (Yii::app()->db->getCommandBuilder()->createFindCommand('rating2item', $c2)->queryAll() as $r) {
             if ($r['RatingId'] == $rating) {

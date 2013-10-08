@@ -25,7 +25,8 @@ class ExportCommand extends CConsoleCommand {
                     'DateCreated' => $date,
                 ))->execute();
                 $itemId = Yii::app()->db->getCommandBuilder()->getLastInsertID('item');
-            }else
+            }
+            else
                 $itemId = $exist['Id'];
             Yii::app()->db->getCommandBuilder()->createSQLCommand('REPLACE INTO rating2item (ItemId,RatingId) values (' . $itemId . ',' . $ratingId . ')')->execute();
         }
@@ -34,17 +35,19 @@ class ExportCommand extends CConsoleCommand {
     public function actionGoogleTrend() {
         $date = new DateTime('2004-01-01');
         $today = date('Ym');
+        $p = new StringParser();
         while (($start = $date->format('Ym')) != $today) {
             echo 'Date=' . $start . "\n";
-            $r = file_get_contents('http://www.google.com/trends/topcharts/category?ajax=1&cid=&date=' . $start . '&geo=US');
-            $r = json_decode($r, true);
+            $p->url('http://www.google.com/trends/topcharts/category?ajax=1&cid=&date=' . $start . '&geo=US');
+            $r = json_decode($p->get(), true);
             $newItems = 0;
             foreach ($r['data']['chartList'] as $c) {
                 $name = 'Most Popular ' . $c['visibleName'];
                 $rId = $this->createRating($name, $c['visibleName']);
-                
+
                 foreach ($c['entityList'] as $i) {
-                    $this->createItem($i['title'], isset($i['imageInfo']['url']) ? $i['imageInfo']['url'] : null, $rId);
+                    $id = $this->createItem($i['title'], isset($i['imageInfo']['url']) ? $i['imageInfo']['url'] : null, $rId);
+                    $this->getWiki($i['description']['sourceUrl'], $id);
                     $newItems++;
                 }
             }
@@ -53,12 +56,40 @@ class ExportCommand extends CConsoleCommand {
         }
     }
 
+    protected function getWiki($url, $itemId) {
+        $p = new StringParser();
+        echo $url . "\n";
+        $content = $p->url($url)
+                ->between(
+                '<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr">', '<div class="visualClear"></div>'
+        );
+        if (empty($content)){
+            echo 'empty'."\n";
+            return;
+        }
+        
+        $data['Content'] = $content->removeTags(array('script', 'table', 'div', 'ul', 'sup'))
+                ->stripTags('<b>,<i>,<ul>,<li>,<p>,<h2>,<h3>')
+                ->remove(array('<h2>Notes</h2>', '<h2>External links</h2>', '[edit source | edit]'))
+                ->get();
+        
+        $data['Source'] = 'wikipedia.org';
+        $data['SourceUrl'] = $url;
+        $data['ItemId'] = $itemId;
+        $data['DateCreated'] = date('Y-m-d H:i:s');
+        
+        $c = new CDbCriteria();
+        $c->addColumnCondition(array('Source'=>'wikipedia.org','ItemId'=>$itemId));
+        Yii::app()->db->getCommandBuilder()->createDeleteCommand('item_text', $c)->execute();
+        
+        $r = Yii::app()->db->getCommandBuilder()->createInsertCommand('item_text', $data)->execute();
+    }
+
     public function actionWiki() {
         $c = new CDbCriteria(array('select' => 't.Id,Keyword'));
         $c->join = 'LEFT JOIN wiki_log it ON t.Id = it.ItemId';
         $c->addCondition('it.DateCreated < (NOW() - Interval 3 MONTH) OR it.dateCreated IS NULL');
         $c->limit = 100;
-        $p = new StringParser();
         do {
             $r = Yii::app()->db->getCommandBuilder()->createFindCommand('item', $c)->queryAll();
             foreach ($r as $i) {
@@ -67,27 +98,9 @@ class ExportCommand extends CConsoleCommand {
                 $articles = json_decode($p->url($u)->get(), true);
                 if (isset($articles[1])) {
                     foreach ($articles[1] as $wikiTitle) {
-                        $p->reset();
                         echo $wikiTitle . "\n";
                         $data = array();
-                        $wu = 'http://en.wikipedia.org/wiki/' . strtr($wikiTitle, array(' ' => '_', '?' => '%3F'));
-                        echo $wu . "\n";
-                        $content = $p->url($wu)
-                                ->between(
-                                '<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr">', '<div class="visualClear"></div>'
-                        );
-                        if (empty($content))
-                            continue;
-
-                        $data['Content'] = $content->removeTags(array('script', 'table', 'div', 'ul', 'sup'))
-                                ->stripTags('<b>,<i>,<ul>,<li>,<p>,<h2>,<h3>')
-                                ->remove(array('<h2>Notes</h2>', '<h2>External links</h2>', '[edit source | edit]'))
-                                ->get();
-                        $data['Source'] = 'wikipedia.org';
-                        $data['SourceUrl'] = $wu;
-                        $data['ItemId'] = $i['Id'];
-                        $data['DateCreated'] = date('Y-m-d H:i:s');
-                        Yii::app()->db->getCommandBuilder()->createInsertCommand('item_text', $data)->execute();
+                        $this->getWiki('http://en.wikipedia.org/wiki/'.strtr($wikiTitle, array(' ' => '_', '?' => '%3F')), $i['Id']);
                         break;
                     }
                 }
@@ -119,7 +132,7 @@ class ExportCommand extends CConsoleCommand {
             $page = 1;
             $url = 'http://www.biography.com' . $url . '/all?view=gallery&sort=last-name&page=';
             echo $categoryName . "\n";
-            
+
             $fetch = true;
             while (true) {
                 $pc = $p->url($url . $page)->between('<ul class = "gallery-list">', '<!-- Center: End -->');
@@ -201,6 +214,7 @@ class ExportCommand extends CConsoleCommand {
         if (empty($exist)) {
             $data = array(
                 'Keyword' => $keyword,
+                'Key' => $keyword,
                 'Description' => '',
                 'Image' => $image,
                 'DateCreated' => $date,

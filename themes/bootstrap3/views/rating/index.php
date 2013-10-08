@@ -12,7 +12,7 @@
     <th width="2%">#</th>
     <th width="20%">Image</th>
     <th width="55%">Name</th>
-    <th width="10%" class="text-center">Web Rank</th>
+    <th width="10%" class="text-center">Web Rank <a style="text-decoration: none;"><i style="font-size:16px;"class="glyphicon glyphicon-question-sign webrank"></i></a></th>
     <th width="13%">Date Updated</th>
 </tr>
     <?php foreach ($items as $n=>$i) {?>

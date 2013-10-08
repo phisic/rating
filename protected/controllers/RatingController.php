@@ -3,6 +3,7 @@
 class RatingController extends Controller {
 
     public function actionIndex($rating = 'all') {
+        Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/tooltip.js', CClientScript::POS_END);
         if($rating=='all')
             $this->forward('all');
         if (!empty($rating)) {
