@@ -2,12 +2,13 @@
 <div class="well">
     Presented ratings are not based on the decisions of any experts and professionals. 
     The rating is based on naturally on the opinions of all Internet users including you and me.
-    That's why we named it open web rating. 
+    That's why we named it open web rating.
     Popularity is determined by a simple parameter we named it <b>"Web Rank"</b>. 
+    We calculating popularity using available data over the Internet.
     "Web Rank" - reflects how the theme is popular on the Internet. 
     There is simple rule, the more people talk about certain theme in their comments, articles and reviews and it results higher web rank for this theme.
 </div>
-<table width="100%">
+<table class="table-100">
     <?php
     foreach ($list['Rating'] as $r) {
         ?>
@@ -17,7 +18,7 @@
             </td>
         </tr>
         <tr>
-            <td width="33%" valign="top">
+            <td class="table-33">
 
                 <span class="label label-info">Most popular</span>
                 <?php
@@ -27,7 +28,7 @@
                     ?>
                     <div class="list_item clearfix">
                         <div class="col-lg-4 padding_left0">
-                            <img class="img-thumbnail" src="/rt/p<?= $i['Id'] . '-100x100.jpg' ?>">
+                            <img alt="<?= $i['Keyword'] ?>" class="img-thumbnail" src="/rt/p<?= $i['Id'] . '-100x100.jpg' ?>">
                         </div>
                         <div class="col-lg-8 padding_left0">
                             <div>
@@ -47,7 +48,7 @@
                     </div> 
     <?php } ?>
             </td>
-            <td width="33%" valign="top">
+            <td class="table-33">
                 <span class="label label-success">Growing popularity</span>
                 <?php
                 $n = 0;
@@ -57,7 +58,7 @@
                         ?>
                         <div class="list_item clearfix">
                             <div class="col-lg-4 padding_left0">
-                                <img class="img-thumbnail" src="/rt/p<?= $i['Id'] . '-100x100.jpg' ?>">
+                                <img alt="<?= $i['Keyword'] ?>" class="img-thumbnail" src="/rt/p<?= $i['Id'] . '-100x100.jpg' ?>">
                             </div>
                             <div class="col-lg-8 padding_left0">
                                 <div>
@@ -72,7 +73,7 @@
                     <?php } ?>
 
             </td>
-            <td valign="top">
+            <td class="table-33">
                 <span class="label label-danger">Losing popularity</span>
     <?php
     $n = 0;
@@ -82,7 +83,7 @@
             ?>
                         <div class="list_item clearfix">
                             <div class="col-lg-4 padding_left0">
-                                <img class="img-thumbnail" src="/rt/p<?= $i['Id'] . '-100x100.jpg' ?>">
+                                <img alt="<?= $i['Keyword'] ?>" class="img-thumbnail" src="/rt/p<?= $i['Id'] . '-100x100.jpg' ?>">
                             </div>
                             <div class="col-lg-8 padding_left0">
                                 <div>

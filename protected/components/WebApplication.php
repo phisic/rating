@@ -21,7 +21,7 @@ class WebApplication extends CWebApplication {
     }
 
     function rank($n, $precision = 2) {
-        $n = $n/1E3;
+        $n = $n/10;
         $sign = $n<0 ? '-' : '';
         $n = abs($n);
         if ($n < 1000) {

@@ -15,9 +15,10 @@
 
                 <?php foreach ($r3 as $r) { ?> 
                     <div class="thumbnail">
-                        <a href="<?= Yii::app()->seoUrl('rating', $r['Name']); ?>" title="View full rating <?= $r['Name'] ?>">
+                            <a href="<?= Yii::app()->seoUrl('rating', $r['Name']); ?>" title="View full rating <?= $r['Name'] ?>">
                             <div><strong><?= $r['Name'] ?></strong></div>
-                            <div><img alt="<?= $r['Name'] ?>" src="/rt/r<?= $r['Id'] ?>-200x200.jpg"></a></div>
+                            <div><img alt="<?= $r['Name'] ?>" src="/rt/r<?= $r['Id'] ?>-200x200.jpg"></div>
+                            </a>
                             <?php foreach ($r['i'][$r['Id']] as $n => $i) { ?>
                                 <div><b>#<?= $n + 1 ?>.</b> <a href="<?=Yii::app()->seoUrl('',$i['Keyword'].'-'.$r['Id']);?>"><?= $i['Keyword'] ?></a></div>
                             <?php } ?>

@@ -92,13 +92,24 @@ class StringParser {
         }
     }
 
-    protected function getContent($url) {
+    public function getContent($url) {
         $h = md5($url);
         $c = new CDbCriteria(array('select' => 'Content'));
         $c->addColumnCondition(array('Hash' => $h));
         $c->addCondition('DateCreated > (NOW() - INTERVAL 3 MONTH)');
         if (!($cont = Yii::app()->db->getCommandBuilder()->createFindCommand('text_cache', $c)->queryScalar())) {
-            $cont = file_get_contents($url);
+            
+            $c = self::$client[self::$marker];
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $c);
+
+            $cont = curl_exec($ch);
+            $cont = $this->compatible_gzinflate($cont);
+            curl_close($ch);
+
             Yii::app()->db->getCommandBuilder()->createInsertCommand('text_cache', array('Hash' => md5($url), 'Url' => $url, 'Content' => $cont, 'DateCreated' => date('Y-m-d H:i:s')))->execute();
         }
         return $cont;

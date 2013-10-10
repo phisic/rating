@@ -7,12 +7,12 @@
 <div class="container">
     <div class="row" style="padding-right: 10px;">
         <div class="col-md-3"><img class="img-thumbnail" alt="<?= $i['Keyword'] ?>" src="/rt/p<?= $i['Id'] ?>-300x300.jpg"></div>
-        <div class="col-md-4" style="font-size:18px; margin-top: 10px;">
+        <div class="col-md-<?=count($ratings)>1?4:8?>" style="font-size:18px; margin-top: 10px;">
             <?php
                 $rating = array_shift($ratings);
                 echo '<div><strong>#' . $rating['Position'] . '</strong> in <a href="' . Yii::app()->seoUrl('rating', $rating['Name']) . '">' . $rating['Name'] . '</a> rating</div>';
 
-                echo '<div><i class="glyphicon glyphicon-signal"></i> Web Rank: <strong>' . Yii::app()->rank($rating['Rank']) . '</strong></div>';
+                echo '<div><i class="glyphicon glyphicon-signal"></i> Web Rank: <strong>' . Yii::app()->rank($rating['Rank']) . '</strong> <a style="text-decoration: none;"><i style="font-size:16px;" class="glyphicon glyphicon-question-sign webrank"></i></a></div>';
                 if ($rating['RankDelta'] == 0) {
                     $popularity = '<strong>stable</strong>';
                     $picon = 'glyphicon glyphicon-minus-sign';
@@ -58,7 +58,7 @@
         <h3>Useful information</h3>
         <?php
         foreach ($text as $t) {
-            echo '<div class="container well"><div>' . strip_tags($t['Content'], '<p>,<b>,<i>') . '</div><p>Read more: <noindex><a target="_blank" rel="nofollow" href="' . Yii::app()->createUrl('site/external').'?id='.$t['Id'] . '">' . $t['Source'] . '</a></noindex></p></div>';
+            echo '<div class="container well"><div>' . strip_tags($t['Content'], '<p>,<b>,<i>') . '</div><p>Read more: <a target="_blank" rel="nofollow" href="' . Yii::app()->createUrl('site/external').'?id='.$t['Id'] . '">' . $t['Source'] . '</a></p></div>';
         }
         ?>
     </div>

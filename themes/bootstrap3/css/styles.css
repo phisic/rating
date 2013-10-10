@@ -44,3 +44,6 @@ body {
     overflow: hidden;
     padding-bottom: 40px;
 }
+
+.table-100{width:100%;}
+.table-33{width:33%;vertical-align: text-top}

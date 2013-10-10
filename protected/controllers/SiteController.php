@@ -35,6 +35,7 @@ class SiteController extends Controller {
     }
 
     public function actionItem($keyword, $rating = 0) {
+        Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/tooltip.js', CClientScript::POS_END);
         $name = Yii::app()->decodeSeoUrl($keyword);
         $c = new CDbCriteria();
         $c->addColumnCondition(array('Keyword' => $name));

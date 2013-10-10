@@ -9,11 +9,11 @@
 <div class="container">
 <table class="table table-condensed">
     <tr>
-    <th width="2%">#</th>
-    <th width="20%">Image</th>
-    <th width="55%">Name</th>
-    <th width="10%" class="text-center">Web Rank <a style="text-decoration: none;"><i style="font-size:16px;"class="glyphicon glyphicon-question-sign webrank"></i></a></th>
-    <th width="13%">Date Updated</th>
+    <th style="width:2%;">#</th>
+    <th style="width:20%;">Image</th>
+    <th style="width:55%;">Name</th>
+    <th style="width:10%;" class="text-center">Web Rank <a style="text-decoration: none;"><i style="font-size:16px;" class="glyphicon glyphicon-question-sign webrank"></i></a></th>
+    <th style="width:13%;">Date Updated</th>
 </tr>
     <?php foreach ($items as $n=>$i) {?>
    <tr>
@@ -23,7 +23,7 @@
             <td><a href="<?=Yii::app()->seoUrl('', $i['Keyword'].'-'.$rating['Id']);?>"><img alt="<?=$i['Keyword']?>" class="img-thumbnail" src="/rt/p<?=$i['Id'].'-200x200.jpg'?>"></a></td>
             <td>
                     <a href="<?=Yii::app()->seoUrl('', $i['Keyword'].'-'.$rating['Id']);?>"><strong><?=$i['Keyword']?></strong></a>
-                    <div class="hidden-xs"><?=isset($i['Description'])?$i['Description']:''?></div></td>
+                    <div class="hidden-xs"><?=isset($i['Description'])?$i['Description']:''?></div>
             </td>
             <td class="text-center"><strong><?=Yii::app()->rank($i['Rank'])?></strong>
                 <?php if($i['RankDelta']==0){}?>

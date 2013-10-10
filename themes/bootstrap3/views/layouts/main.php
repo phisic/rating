@@ -3,7 +3,6 @@
     <head>
         <meta charset="UTF-8" />
         <title><?php echo CHtml::encode($this->pageTitle); ?></title>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Bootstrap -->
         <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -60,13 +59,11 @@
                     </div><!-- /.navbar-collapse -->
                 </div>
             </nav>
-            <div id="content">
                 <div class="page-inner">
                     <div class="page-unique">
                         <?php echo $content; ?>
                     </div>
                 </div>
-            </div>
             <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
                 <div class="container">
                     <a class="navbar-brand" href="/"><?php echo date('Y'); ?> PopularOnWeb   All Rights Reserved</a>

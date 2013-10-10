@@ -83,7 +83,7 @@ class RatingCommand extends CConsoleCommand {
     public function actionBing() {
         $c = new CDbCriteria(array('select' => 'ri.ItemId,ri.RatingId,i.Key as Keyword,ri.Rank,Context'));
         $c->join = 'JOIN rating2item ri ON ri.RatingId = t.Id JOIN item i ON i.Id = ri.ItemId';
-        $c->addCondition('((RankDate < (now()-INTERVAL 22 HOUR)) OR (RankDate Is NULL))');
+        $c->addCondition('((RankDate < (now()-INTERVAL 5 HOUR)) OR (RankDate Is NULL))');
         $c->order = 'RankDate';
         $c->limit = 100;
         $px = new StringParser();
@@ -174,7 +174,7 @@ class RatingCommand extends CConsoleCommand {
     public function actionYa() {
         $c = new CDbCriteria(array('select' => 'ri.ItemId,ri.RatingId,i.Keyword,ri.Rank,Context'));
         $c->join = 'JOIN rating2item ri ON ri.RatingId = t.Id JOIN item i ON i.Id = ri.ItemId';
-        $c->addCondition('(RankDate < (now()-INTERVAL 5 HOUR)) OR (RankDate Is NULL)');
+        $c->addCondition('(RankDate < (now()-INTERVAL 20 HOUR)) OR (RankDate Is NULL)');
         $c->order = 'RankDate';
         $c->limit = 100;
         $px = new StringParser();

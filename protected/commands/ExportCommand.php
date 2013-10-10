@@ -43,10 +43,15 @@ class ExportCommand extends CConsoleCommand {
             $newItems = 0;
             foreach ($r['data']['chartList'] as $c) {
                 $name = 'Most Popular ' . $c['visibleName'];
-                $rId = $this->createRating($name, $c['visibleName']);
+                //$rId = $this->createRating($name, $c['visibleName']);
 
                 foreach ($c['entityList'] as $i) {
-                    $id = $this->createItem($i['title'], isset($i['imageInfo']['url']) ? $i['imageInfo']['url'] : null, $rId);
+                    $id = $this->getItemId($i['title']);
+                    if(!$id){
+                        echo $i['title']."\n";//$id = $this->createItem($i['title'], isset($i['imageInfo']['url']) ? $i['imageInfo']['url'] : null, $rId);
+                    
+                        continue;
+                    }
                     $this->getWiki($i['description']['sourceUrl'], $id);
                     $newItems++;
                 }
@@ -84,7 +89,10 @@ class ExportCommand extends CConsoleCommand {
         
         $r = Yii::app()->db->getCommandBuilder()->createInsertCommand('item_text', $data)->execute();
     }
-
+    
+    public function actionTest(){
+        $this->getWiki('http://en.wikipedia.org/wiki/Steve_Jobs', 12849);
+    }
     public function actionWiki() {
         $c = new CDbCriteria(array('select' => 't.Id,Keyword'));
         $c->join = 'LEFT JOIN wiki_log it ON t.Id = it.ItemId';
@@ -205,7 +213,14 @@ class ExportCommand extends CConsoleCommand {
         else
             return $rexist['Id'];
     }
-
+    
+    protected function getItemId($keyword){
+        $c2 = new CDbCriteria(array('select' => 'Id'));
+        $c2->addColumnCondition(array('Keyword' => $keyword));
+        $exist = Yii::app()->db->getCommandBuilder()->createFindCommand('item', $c2)->queryRow();
+        if($exist)
+            return $exist['Id'];
+    }
     protected function createItem($keyword, $image, $ratingId = false, $attributes = null) {
         $date = date('Y-m-d H:i:s');
         $c2 = new CDbCriteria(array('select' => 'Id'));
