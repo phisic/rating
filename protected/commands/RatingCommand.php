@@ -83,7 +83,7 @@ class RatingCommand extends CConsoleCommand {
     public function actionBing() {
         $c = new CDbCriteria(array('select' => 'ri.ItemId,ri.RatingId,i.Key as Keyword,ri.Rank,Context'));
         $c->join = 'JOIN rating2item ri ON ri.RatingId = t.Id JOIN item i ON i.Id = ri.ItemId';
-        $c->addCondition('((RankDate < (now()-INTERVAL 5 HOUR)) OR (RankDate Is NULL))');
+        $c->addCondition('((RankDate > (now()-INTERVAL 1 HOUR)) and (Rank < 100))');
         $c->order = 'RankDate';
         $c->limit = 100;
         $px = new StringParser();

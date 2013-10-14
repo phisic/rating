@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <title><?php echo CHtml::encode($this->pageTitle); ?></title>
+        <?= $this->pageDescription ? '<meta name="description" content="'.$this->pageDescription.'">'."\n" : ''?>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Bootstrap -->
         <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/bootstrap.min.css" rel="stylesheet" media="screen">

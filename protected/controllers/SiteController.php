@@ -45,7 +45,7 @@ class SiteController extends Controller {
         } else {
             throw new CHttpException(404);
         }
-
+        
         $c2 = new CDbCriteria();
         $c2->join = 'JOIN rating r ON r.Id = t.RatingId';
         $c2->addColumnCondition(array('ItemId' => $i['Id']));
@@ -59,12 +59,15 @@ class SiteController extends Controller {
                 $i['RatingName'] = $r['Name'];
                 $i['Category'] = Yii::app()->helper->categories[$r['CategoryId']]['Name'];
                 Yii::app()->helper->activeCategory = $r['CategoryId'];
-                $this->pageTitle = $i['Keyword'] . ' in ' . $r['Name'];
+                $this->pageTitle = $i['Keyword'] . ' in ' . $r['Name'] .' rating';
             }
             $ratings[] = $r;
         }
         if (empty($ratings))
             throw new CHttpException(404);
+        
+        $this->pageDescription = htmlentities($i['Keyword']) . ' is #'.$i['Position'] . ' in '.htmlentities($i['RatingName']) . ' rating. '.htmlentities($i['Keyword']).' Web Rank is '.Yii::app()->rank($ratings[0]['Rank']).'. Popularity is determined by a simple parameter we named it Web Rank. Popularity rating is calculated using available data over the Internet. Web Rank - reflects how the theme is popular on the Internet.' ;
+        
         $c3 = new CDbCriteria();
         $c3->select = 'Id,Source,SourceUrl, substr(Content,1,2000) as Content';
         $c3->addColumnCondition(array('ItemId' => $i['Id']));
