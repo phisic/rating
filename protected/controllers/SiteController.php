@@ -20,6 +20,20 @@ class SiteController extends Controller {
         );
     }
 
+    public function filters() {
+        return array(
+            array(
+                'CHttpCacheFilter',
+                'lastModified' => Yii::app()->db->createCommand("SELECT MAX(`RankDate`) FROM rating2item")->queryScalar(),
+            ),
+            array(
+                'COutputCache',
+                'duration' => 7*24*3600,
+                'varyByParam' => array('keyword','rating'),
+            ),
+        );
+    }
+
     /**
      * This is the default 'index' action that is invoked
      * when an action is not explicitly requested by users.
@@ -35,7 +49,7 @@ class SiteController extends Controller {
     }
 
     public function actionItem($keyword, $rating = 0) {
-        Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/tooltip.js', CClientScript::POS_END);
+        Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl . '/js/tooltip.js', CClientScript::POS_END);
         $name = Yii::app()->decodeSeoUrl($keyword);
         $c = new CDbCriteria();
         $c->addColumnCondition(array('Keyword' => $name));
@@ -45,12 +59,12 @@ class SiteController extends Controller {
         } else {
             throw new CHttpException(404);
         }
-        
+
         $c2 = new CDbCriteria();
         $c2->join = 'JOIN rating r ON r.Id = t.RatingId';
         $c2->addColumnCondition(array('ItemId' => $i['Id']));
         $c2->select = 'Name,RatingId,Position,Rank,RankDate, RankDelta,CategoryId';
-        $c2->order = '(RatingId='.$rating.') DESC';
+        $c2->order = '(RatingId=' . $rating . ') DESC';
         $ratings = array();
         foreach (Yii::app()->db->getCommandBuilder()->createFindCommand('rating2item', $c2)->queryAll() as $r) {
             if ($r['RatingId'] == $rating) {
@@ -59,15 +73,15 @@ class SiteController extends Controller {
                 $i['RatingName'] = $r['Name'];
                 $i['Category'] = Yii::app()->helper->categories[$r['CategoryId']]['Name'];
                 Yii::app()->helper->activeCategory = $r['CategoryId'];
-                $this->pageTitle = $i['Keyword'] . ' in ' . $r['Name'] .' rating';
+                $this->pageTitle = $i['Keyword'] . ' in ' . $r['Name'] . ' rating';
             }
             $ratings[] = $r;
         }
         if (empty($ratings))
             throw new CHttpException(404);
-        
-        $this->pageDescription = htmlentities($i['Keyword']) . ' is #'.$i['Position'] . ' in '.htmlentities($i['RatingName']) . ' rating. '.htmlentities($i['Keyword']).' Web Rank is '.Yii::app()->rank($ratings[0]['Rank']).'. Popularity is determined by a simple parameter we named it Web Rank. Popularity rating is calculated using available data over the Internet. Web Rank - reflects how the theme is popular on the Internet.' ;
-        
+
+        $this->pageDescription = htmlentities($i['Keyword']) . ' is #' . $i['Position'] . ' in ' . htmlentities($i['RatingName']) . ' rating. ' . htmlentities($i['Keyword']) . ' Web Rank is ' . Yii::app()->rank($ratings[0]['Rank']) . '. Popularity is determined by a simple parameter we named it Web Rank. Popularity rating is calculated using available data over the Internet. Web Rank - reflects how the theme is popular on the Internet.';
+
         $c3 = new CDbCriteria();
         $c3->select = 'Id,Source,SourceUrl, substr(Content,1,2000) as Content';
         $c3->addColumnCondition(array('ItemId' => $i['Id']));

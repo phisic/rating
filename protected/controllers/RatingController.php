@@ -1,7 +1,21 @@
 <?php
 
 class RatingController extends Controller {
-
+    
+    public function filters() {
+        return array(
+            array(
+                'CHttpCacheFilter',
+                'lastModified' => Yii::app()->db->createCommand("SELECT MAX(`RankDate`) FROM rating2item")->queryScalar(),
+            ),
+            array(
+                'COutputCache',
+                'duration' => 7*24*3600,
+                'varyByParam' => array('rating'),
+            ),
+        );
+    }
+    
     public function actionIndex($rating = 'all') {
         Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/tooltip.js', CClientScript::POS_END);
         if($rating=='all')
