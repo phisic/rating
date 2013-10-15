@@ -39,7 +39,7 @@ class SiteController extends Controller {
      * when an action is not explicitly requested by users.
      */
     public function actionIndex() {
-        $this->pageTitle = Yii::app()->name . ', find your ' . Yii::app()->params['category'];
+        $this->pageTitle = 'Open Web Rating';
         $count = Yii::app()->helper->getRatingCount(0);
         $pager = new CPagination($count);
         $pager->pageSize = 5;

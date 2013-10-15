@@ -3,7 +3,6 @@
     <head>
         <meta charset="UTF-8" />
         <title><?php echo CHtml::encode($this->pageTitle); ?></title>
-        <?= $this->pageDescription ? '<meta name="description" content="'.$this->pageDescription.'">'."\n" : ''?>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Bootstrap -->
         <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -16,6 +15,7 @@
         <![endif]-->
     </head>
     <body>
+        <?php if (isset(Yii::app()->params['GACode'])) echo Yii::app()->params['GACode']; ?>
         <div class="container maincontainer">
             <nav class="navbar navbar-default top-nav-bar navbar-fixed-top" role="navigation">
                 <div class="container">
@@ -27,6 +27,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
+                        
                         <form class="navbar-form navbar-left visible-xs pull-right top-search-form" role="search">
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="Search">
@@ -57,6 +58,19 @@
 //                            </li>
 //                        </ul>
                        ?>
+                        <script>
+                            (function() {
+                              var cx = '003018044578018772467:gapex7dt6co';
+                              var gcse = document.createElement('script');
+                              gcse.type = 'text/javascript';
+                              gcse.async = true;
+                              gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+                                  '//www.google.com/cse/cse.js?cx=' + cx;
+                              var s = document.getElementsByTagName('script')[0];
+                              s.parentNode.insertBefore(gcse, s);
+                            })();
+                          </script>
+                          <gcse:search></gcse:search>
                     </div><!-- /.navbar-collapse -->
                 </div>
             </nav>
