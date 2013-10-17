@@ -8,11 +8,6 @@ class RatingController extends Controller {
                 'CHttpCacheFilter',
                 'lastModified' => Yii::app()->db->createCommand("SELECT MAX(`RankDate`) FROM rating2item")->queryScalar(),
             ),
-            array(
-                'COutputCache',
-                'duration' => 7*24*3600,
-                'varyByParam' => array('rating'),
-            ),
         );
     }
     
