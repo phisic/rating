@@ -27,7 +27,7 @@ class SiteController extends Controller {
                 'lastModified' => Yii::app()->db->createCommand("SELECT MAX(`RankDate`) FROM rating2item")->queryScalar(),
             ),
             array(
-                'COutputCache',
+                'COutputCache + item',
                 'duration' => 7*24*3600,
                 'varyByParam' => array('keyword','rating'),
             ),
