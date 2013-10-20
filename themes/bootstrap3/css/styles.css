@@ -47,3 +47,18 @@ body {
 
 .table-100{width:100%;}
 .table-33{width:33%;vertical-align: text-top}
+.reset-box-sizing,
+.reset-box-sizing * {
+  -webkit-box-sizing: content-box;
+     -moz-box-sizing: content-box;
+          box-sizing: content-box;
+}
+#___gcse_0 .gsc-control-cse{
+    padding:0px;
+    padding-top:8px;
+    background-color:inherit;
+    border: inherit;
+}
+#___gcse_0 .gsib_a{
+    padding:2px 2px;
+}

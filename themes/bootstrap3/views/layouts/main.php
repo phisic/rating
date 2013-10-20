@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <title><?php echo CHtml::encode($this->pageTitle); ?></title>
+        <?= $this->pageDescription ? '<meta name="description" content="'.$this->pageDescription.'">'."\n" : ''?>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Bootstrap -->
         <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -27,25 +28,12 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        
-                        <form class="navbar-form navbar-left visible-xs pull-right top-search-form" role="search">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Search">
-                            </div>
-                            <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-                        </form>
                         <a class="navbar-brand hidden-xs" href="/"><span class="text-info">Open</span><span class="text-success">Web</span><span class="text-danger">Rating</span></a>
                         <a class="navbar-brand visible-xs" style="padding-left:5px;padding-right:0px;" href="/"><span class="text-info">Open</span><span class="text-success">Web</span><span class="text-danger">Rating</span></a>
                     </div>
 
                     <div class="collapse navbar-collapse navbar-ex1-collapse">
                         <?= Yii::app()->helper->mainMenu(); ?>
-                        <form class="navbar-form navbar-right hidden-md hidden-sm" role="search">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Search">
-                            </div>
-                            <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-                        </form>
                         <?
 //                        <ul class="nav navbar-nav navbar-right">
 //                            <!--li><a href="#">Login</a></li>
@@ -58,6 +46,21 @@
 //                            </li>
 //                        </ul>
                        ?>
+                        <div class="pull-right reset-box-sizing visible-lg" style="width:350px;">
+                            <script>
+                             (function() {
+                               var cx = '003018044578018772467:gapex7dt6co';
+                               var gcse = document.createElement('script');
+                               gcse.type = 'text/javascript';
+                               gcse.async = true;
+                               gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+                                   '//www.google.com/cse/cse.js?cx=' + cx;
+                               var s = document.getElementsByTagName('script')[0];
+                               s.parentNode.insertBefore(gcse, s);
+                             })();
+                           </script>
+                           <gcse:search></gcse:search>
+                        </div>      
                     </div><!-- /.navbar-collapse -->
                 </div>
             </nav>
