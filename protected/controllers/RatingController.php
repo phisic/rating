@@ -25,6 +25,7 @@ class RatingController extends Controller {
         }
         if(empty($rating))
             throw new CHttpException(404);
+        $this->pageTitle = $rating['Name'] . ' rating';
         Yii::app()->helper->activeCategory = $rating['CategoryId'];
         $rating['Category'] = Yii::app()->helper->categories[$rating['CategoryId']]['Name'];
         $count = Yii::app()->helper->getItemCount($Id);
