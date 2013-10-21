@@ -1,12 +1,6 @@
 <div class="container" style="padding-top:15px;">
 <div class="well">
-    Presented ratings are not based on the decisions of any experts and professionals. 
-    The rating is based on naturally on the opinions of all Internet users including you and me.
-    That's why we named it open web rating.
-    Popularity is determined by a simple parameter we named it <b>"Web Rank"</b>. 
-    We calculating popularity using available data over the Internet.
-    "Web Rank" - reflects how the theme is popular on the Internet. 
-    There is simple rule, the more people talk about certain theme in their comments, articles and reviews and it results higher web rank for this theme.
+    Presented ratings are not based on the decisions of any experts and professionals. The rating is based naturally on the opinions of all Internet users including you and me. That's why we have named it "open web rating". Popularity is determined by a simple parameter named "Web Rank". We have calculated popularity using available data over the Internet. "Web Rank" - reflects themes' popularity on the Internet. There is a simple rule, the more people talk about certain themes in their comments, articles and reviews, the higher web rank for these themes is.
 </div>
 <table class="table-100">
     <?php
