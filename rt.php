@@ -45,7 +45,7 @@ if (isset($_GET['rid']) && isset($_GET['width']) && isset($_GET['height'])) {
 
 function imageResize($image, $thumb_width, $new_filename) {
     $image = str_replace(' ', '%20', $image);
-    if(substr($image,1,7)=='http://')
+    if(substr($image,0,7)!='http://')
        $image = '.' . $image;
     $max_width = $thumb_width;
     //Check if GD extension is loaded
