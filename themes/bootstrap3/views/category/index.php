@@ -9,6 +9,7 @@
 
         <?php
         $cnt = ceil(count($ratings) / 4);
+        if(!empty($ratings))
         foreach (array_chunk($ratings, $cnt) as $r3) {
             ?>
             <div class="col-sm-6 col-md-3">
