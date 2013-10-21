@@ -28,5 +28,5 @@
             </div>
         <?php } ?>
     </div>
-    <?php $this->widget('CLinkPager', array('htmlOptions' => array('class' => 'pager'), 'pages' => $pager)); ?>
+    <?php $this->widget('CLinkPager', array('htmlOptions' => array('class' => 'pager'),'header'=>false, 'pages' => $pager)); ?>
 </div>
