@@ -71,7 +71,7 @@
                 </div>
             <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
                 <div class="container">
-                    <a class="navbar-brand" href="/"><?php echo date('Y'); ?> PopularOnWeb   All Rights Reserved</a>
+                    <a class="navbar-brand" href="/"><?php echo date('Y'); ?> Open Web Rating   All Rights Reserved</a>
                 </div>
             </nav>
         </div>
